@@ -12,7 +12,7 @@ class WishListSerializer(serializers.ModelSerializer):
     items_list = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = WishList
-        fields = ('user','title','created','items_list')
+        fields = ('id','user','title','created','items_list')
 
 class ItemSerializer(serializers.ModelSerializer):
     # queryset=WishList.objects.all()

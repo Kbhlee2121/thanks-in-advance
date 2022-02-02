@@ -112,7 +112,7 @@ def deleteWishlist(request, pk):
 # view all wishlists (by user not yet added)
 @api_view(['GET'])
 def viewAllWishlists(request):
-    wishlists = WishList.objects.all()
+    wishlists = WishList.objects.all().order_by('id')
     serializer = WishListSerializer(wishlists, many=True)
     return Response(serializer.data)
 
