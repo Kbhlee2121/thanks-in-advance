@@ -4,13 +4,13 @@ from . import views
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
     path('user-profile/<str:pk>/', views.viewUserProfile, name="view-userprofile"),
-    path('create-userprofile/', views.createUserProfile, name="create-profile"),
-    path('update-userprofile/<str:pk>/', views.updateUserProfile, name="update-profile"),
+    path('profile-create/', views.createUserProfile, name="create-profile"),
+    path('profile-update/<str:pk>/', views.updateUserProfile, name="update-profile"),
 
     # WISHLIST PATHS
-    path('create-wishlist/', views.createWishlist, name="create-wishlist"),
-    path('update-wishlist/<str:pk>/', views.updateWishlist, name="update-wishlist"),
-    path('delete-wishlist/<str:pk>/', views.deleteWishlist, name="delete-wishlist"),
+    path('wishlist-create/', views.createWishlist, name="create-wishlist"),
+    path('wishlist-update/<str:pk>/', views.updateWishlist, name="update-wishlist"),
+    path('wishlist-delete/<str:pk>/', views.deleteWishlist, name="delete-wishlist"),
 
     # add another <str:pk> for user specific
     path('wishlists/', views.viewAllWishlists, name="view-all-wishlists"),
@@ -22,7 +22,7 @@ urlpatterns = [
     path('items/<str:pk>/', views.itemDetail, name="detail-view-item"),
 
     #view items of a wishlist
-    path('items/<str:list>/', views.viewWishlistItems, name="view-wishlist-items"),
+    path('items-wishlist/<str:list>/', views.viewWishlistItems, name="view-wishlist-items"),
     # create item
     path('create-item/', views.createItem, name="create-item"),
     # update item

@@ -16,26 +16,26 @@ from base import serializers
 def apiOverview(request):
     api_urls = {
         'User Profile': '/user-profile/<str:pk>/',
-        'Create Profile': '/create-profile/<str:pk>/',
-        'Update Profile': '/update-profile/<str:pk>/',
+        'Create Profile': '/profile-create/<str:pk>/',
+        'Update Profile': '/profile-update/<str:pk>/',
         # Unsure if delete profile is necessary
-        'Delete Profile':'/delete-profile/<str:pk>/',
+        'Delete Profile':'/profile-delete/<str:pk>/',
         # list of all wishlists
         'View All Wishlists':'/wishlists/<str:pk>/',
         # detail view of one wishlist, shows list of items. 
         # /items/<user-id>/<wishlist-id>/
         'View Wishlist Items': '/items/<str:list>/<int:id>/',
-        'Create Wishlist':'create-wishlist/<str:pk>/',
+        'Create Wishlist':'wishlist-create/<str:pk>/',
         # Updating the name, not sure about updating items
-        'Update Wishlist':'/<str:pk>/<int:id>/update-wishlist/',
-        'Delete Wishlist':'/<str:pk>/<int:id>/delete-wishlist/',
+        'Update Wishlist':'wishlist-update/<str:pk>/<int:id>/',
+        'Delete Wishlist':'wishlist-delete/<str:pk>/<int:id>/',
         # detailed view of item when clicked, with edit, delete options. 
         # item-view/<user-id>/<wishlist-id>/<item-id>/
         'Detail View Item': '/view-item/<str:pk>/<int:id>/<str:item>/',
         # unsure if correct url path:/<user-id>/<wishlist-id>/create-item
-        'Create Item': '/<str:pk>/<int:id>/create-item/',
-        'Update Item':'/<str:pk>/<int:id>/<str:pk>/update-item',
-        'Delete Item':'/<str:pk>/<int:id>/<str:tk>/delete-view',
+        'Create Item': '/create-item/<str:pk>/<int:id>/',
+        'Update Item':'/update-item/<str:pk>/<int:id>/<str:pk>/',
+        'Delete Item':'/delete-view/<str:pk>/<int:id>/<str:tk>/',
     }
 
     return Response(api_urls)
@@ -177,6 +177,8 @@ def deleteItem(request, pk):
 
     item.delete()
     return Response(status=status.HTTP_200_OK)
+
+
 
 # @api_view(['GET'])
 # def viewItem(request, list, item_id):
