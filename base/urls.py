@@ -16,10 +16,19 @@ urlpatterns = [
     path('wishlists/', views.viewAllWishlists, name="view-all-wishlists"),
 
     # ITEM PATHS
+    #view all items of all wishlists
+    path('items/', views.viewAllItems, name="view-all-items"),
+    # detail view of one item
+    path('items/<str:pk>/', views.itemDetail, name="detail-view-item"),
+
+    #view items of a wishlist
     path('items/<str:list>/', views.viewWishlistItems, name="view-wishlist-items"),
     # create item
+    path('create-item/', views.createItem, name="create-item"),
     # update item
+    path('update-item/<str:pk>/', views.updateItem, name="update-item"),
     # delete item
+    path('delete-item/<str:pk>/', views.deleteItem, name="delete-item"),
     # path('view-item/<str:list>/<str:item_id>/', views.viewItem, name="detail-view-item"),
 
     # path('', views.UserProf/ileView.as_view({'get': 'get_userprofile'})),

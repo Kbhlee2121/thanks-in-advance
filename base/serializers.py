@@ -19,4 +19,4 @@ class ItemSerializer(serializers.ModelSerializer):
     wishlists = WishListSerializer(many=True, read_only=True)
     class Meta:
         model = Item
-        fields = ('wishlists','item_name','claimed','item_link','item_description','item_image')
+        fields = ('id','item_name','claimed','item_link','item_description','item_image','wishlists')

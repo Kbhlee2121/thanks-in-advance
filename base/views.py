@@ -118,6 +118,19 @@ def viewAllWishlists(request):
 
 # ITEMS
 
+#view all items of all wishlists - unsure if necessary
+@api_view(['GET'])
+def viewAllItems(request):
+    items = Item.objects.all().order_by('id')
+    serializer = ItemSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def itemDetail(request, pk):
+    item = Item.objects.get(id=pk)
+    serializer = ItemSerializer(item)
+    return Response(serializer.data)
+
 # view list of items of a wishlist
 @api_view(['GET'])
 def viewWishlistItems(request, list):
@@ -140,19 +153,30 @@ def createItem(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # update item
-# def updateItem(request, pk):
-#     try:
-#         item = WishList.objects.get(id=pk)
-#     except WishList.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
+# doesn't update wishlist attribute
+@api_view(['PUT'])
+def updateItem(request, pk):
+    try:
+        item = Item.objects.get(id=pk)
+    except Item.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-#     serializer = WishListSerializer(wishlist, data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = ItemSerializer(item, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #delete item
+@api_view(['DELETE'])
+def deleteItem(request, pk):
+    try:
+        item = Item.objects.get(id=pk)
+    except Item.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    item.delete()
+    return Response(status=status.HTTP_200_OK)
 
 # @api_view(['GET'])
 # def viewItem(request, list, item_id):
