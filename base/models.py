@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     # the name other users will see
     full_name = models.CharField(max_length=50)
     pronouns = models.CharField(max_length=50, null=True, blank=True)
+    phonetics = models.CharField(max_length=50, null=True, blank=True)
     fav_color = models.CharField(max_length=50, null=True, blank=True)
     fav_color_to_wear = models.CharField(max_length=50, null=True, blank=True)
     fav_food_snack = models.TextField(null=True, blank=True)
