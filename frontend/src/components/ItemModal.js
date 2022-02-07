@@ -74,17 +74,17 @@ class ItemModal extends Component {
                 type="file"
                 name="item_image"
                 value={this.state.activeItem.item_image}
-                onChange={this.onImageChange}
+                onChange={this.props.handleFieldChange}
               />
             </FormGroup>
             {/* claimed label */}
             <FormGroup check>
-              <Label for="claimed">
+              <Label check for="claimed">
                 <Input
                   type="checkbox"
                   name="claimed"
                   checked={this.state.activeItem.claimed}
-                  onChange={this.props.handleFieldChange}
+                  onClick={this.props.handleFieldChange}
                 />
                 Claimed
               </Label>

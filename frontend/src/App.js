@@ -44,13 +44,13 @@ class App extends Component {
     this.state = {
       modal: false,
       activeItem: {
-        // setting defaults to fields
-        id: null,
-        item_name: null,
-        item_description: null,
-        claimed: false,
-        item_link: null,
-        item_image: null,
+        // // setting defaults to fields
+        // id: null,
+        // item_name: null,
+        // item_description: null,
+        // claimed: false,
+        // item_link: null,
+        // item_image: null,
       },
       wishList: [],
       // editing lets us know if we're editing or submitting an item
@@ -59,10 +59,24 @@ class App extends Component {
   }
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
   componentDidMount() {
-    this.refreshList();
+    this.resetActiveItem();
+    this.getItemsList();
   }
 
-  refreshList = () => {
+  resetActiveItem = () => {
+    const emptyItem = {
+      // setting defaults to fields
+      id: null,
+      item_name: null,
+      item_description: null,
+      claimed: false,
+      item_link: null,
+      item_image: null,
+    };
+    this.setState({ activeItem: emptyItem });
+  };
+
+  getItemsList = () => {
     axios
       .get("http://localhost:8000/api/items/")
       .then((response) => this.setState({ wishList: response.data }))
@@ -71,11 +85,22 @@ class App extends Component {
 
   //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
+    console.log(e, e.target);
     let { name, value } = e.target;
-    console.log(name, value);
     if (e.target.type === "checkbox") {
-      value = e.target.checked;
+      // const checkbox = e.target;
+      // displays check
+      // checkbox.click();
+      // changes default in the state for edits
+      const checked = !this.state.activeItem.claimed;
+      e.target.checked = checked;
+      const activeItem = { ...this.state.activeItem, claimed: checked };
+      this.setState({ activeItem });
+      // const checked = !this.state.claimed;
+      return;
     }
+    //if url
+    // if file
     const activeItem = { ...this.state.activeItem, [name]: value };
     this.setState({ activeItem });
   };
@@ -107,7 +132,7 @@ class App extends Component {
   handleDelete = (item) => {
     axios
       .delete(`http://localhost:8000/api/delete-item/${item.id}/`)
-      .then((response) => this.refreshList())
+      .then((response) => this.renderItems())
       .catch((error) => console.log(error));
   };
 
@@ -120,7 +145,7 @@ class App extends Component {
         this.setState({ wishList: this.state.wishList.concat(item) });
         this.renderItems();
         this.toggle();
-        // this.refreshList()
+        this.resetActiveItem();
       })
       .catch((error) => console.log(error));
   };
