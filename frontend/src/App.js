@@ -131,17 +131,30 @@ class App extends Component {
     // }
   };
 
-  handleDelete = (item) => {
-    axios
-      .delete(`http://localhost:8000/api/delete-item/${item.id}/`)
-      .then((response) => this.renderItems())
-      .catch((error) => console.log(error));
+  deleteItem = (item) => {
+    const foundItem = this.state.wishList.find(
+      (wishListItem) => item.id === wishListItem.id
+    );
+    if (foundItem) {
+      axios
+        .delete(`http://localhost:8000/api/item-delete/${item.id}/`)
+        .then((response) => {
+          const filteredWishList = this.state.wishList.filter(
+            (wishListItem) => wishListItem.id !== foundItem.id
+          );
+          this.setState({ wishList: filteredWishList });
+          this.renderItems();
+        })
+        .catch((error) => console.log(error));
+    } else {
+      console.log("Item not found");
+    }
   };
 
   addItem = () => {
     const item = this.state.activeItem;
     axios
-      .post("http://localhost:8000/api/create-item/", item)
+      .post("http://localhost:8000/api/item-create/", item)
       .then((response) => {
         // const updatedList = this.state.wishList.push(item)
         //concat adds item to end of list
@@ -196,6 +209,7 @@ class App extends Component {
         key={item.id}
         className="list-group-item d-flex justify-content-between align-items-center"
       >
+        {/* add onClick for getlist */}
         {item.claimed === false ? (
           <span>{item.item_name}</span>
         ) : (
@@ -210,7 +224,7 @@ class App extends Component {
           </button>
           <button
             className="btn btn-danger mr-2 btn-sm"
-            onClick={this.handleDelete}
+            onClick={(e) => this.deleteItem(item)}
           >
             Delete
           </button>
