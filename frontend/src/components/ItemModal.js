@@ -19,24 +19,6 @@ class ItemModal extends Component {
     };
   }
 
-  //checks if checkbox is checked or not
-  handleChange = (e) => {
-    let { name, value } = e.target;
-    if (e.target.type === "checkbox") {
-      value = e.target.checked;
-    }
-    const activeItem = { ...this.state.activeItem, [name]: value };
-    this.setState({ activeItem });
-  };
-
-  onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      this.setState({
-        image: URL.createObjectURL(event.target.files[0]),
-      });
-    }
-  };
-
   //toggle for if the modal is on or off
   render() {
     // toggle and save the changes which or from this.prop
@@ -52,9 +34,10 @@ class ItemModal extends Component {
               <Label for="item-name">Item Name</Label>
               <Input
                 // type="text"
-                name="item-name"
+                name="item_name"
+                id="item-name"
+                onChange={this.props.handleFieldChange}
                 value={this.state.activeItem.item_name}
-                onChange={this.handleChange}
                 placeholder="Enter Item Name"
               />
             </FormGroup>
@@ -63,9 +46,10 @@ class ItemModal extends Component {
               <Label for="description">Description</Label>
               <Input
                 type="textarea"
-                name="description"
+                name="item_description"
+                id="description"
                 value={this.state.activeItem.item_description}
-                onChange={this.handleChange}
+                onChange={this.props.handleFieldChange}
                 placeholder="Describe the item"
               />
             </FormGroup>
@@ -74,10 +58,11 @@ class ItemModal extends Component {
             <FormGroup>
               <Label for="item-link">Link</Label>
               <Input
+                id="item-link"
                 type="url"
-                name="item-link"
+                name="item_link"
                 value={this.state.activeItem.item_link}
-                onChange={this.handleChange}
+                onChange={this.props.handleFieldChange}
                 placeholder="Enter a link to the item"
               />
             </FormGroup>
@@ -85,8 +70,9 @@ class ItemModal extends Component {
             <FormGroup>
               <Label for="item-image">Image</Label>
               <Input
+                id="item-image"
                 type="file"
-                name="item-image"
+                name="item_image"
                 value={this.state.activeItem.item_image}
                 onChange={this.onImageChange}
               />
@@ -98,7 +84,7 @@ class ItemModal extends Component {
                   type="checkbox"
                   name="claimed"
                   checked={this.state.activeItem.claimed}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleFieldChange}
                 />
                 Claimed
               </Label>
@@ -106,7 +92,7 @@ class ItemModal extends Component {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onClick={() => onSave(this.state.activeItem)}>
+          <Button color="success" onClick={onSave}>
             Save
           </Button>
         </ModalFooter>

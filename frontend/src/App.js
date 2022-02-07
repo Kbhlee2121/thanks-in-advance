@@ -3,40 +3,40 @@ import "./App.css";
 import Modal from "./components/ItemModal";
 import axios from "axios";
 
-const items = [
-  {
-    id: 1,
-    item_name: "sweater",
-    item_description: "cropped earth color",
-    claimed: false,
-    item_link: null,
-    item_image: null,
-  },
-  {
-    id: 2,
-    item_name: "waterbottle",
-    item_description: "pink hydroflask",
-    claimed: true,
-    item_link: null,
-    item_image: null,
-  },
-  {
-    id: 3,
-    item_name: "lotion",
-    item_description: "for sensitive skin",
-    claimed: false,
-    item_link: null,
-    item_image: null,
-  },
-  {
-    id: 4,
-    item_name: "speakers",
-    item_description: "small and waterproof",
-    claimed: true,
-    item_link: null,
-    item_image: null,
-  },
-];
+// const items = [
+//   {
+//     id: 1,
+//     item_name: "sweater",
+//     item_description: "cropped earth color",
+//     claimed: false,
+//     item_link: null,
+//     item_image: null,
+//   },
+//   {
+//     id: 2,
+//     item_name: "waterbottle",
+//     item_description: "pink hydroflask",
+//     claimed: true,
+//     item_link: null,
+//     item_image: null,
+//   },
+//   {
+//     id: 3,
+//     item_name: "lotion",
+//     item_description: "for sensitive skin",
+//     claimed: false,
+//     item_link: null,
+//     item_image: null,
+//   },
+//   {
+//     id: 4,
+//     item_name: "speakers",
+//     item_description: "small and waterproof",
+//     claimed: true,
+//     item_link: null,
+//     item_image: null,
+//   },
+// ];
 
 class App extends Component {
   constructor(props) {
@@ -46,8 +46,8 @@ class App extends Component {
       activeItem: {
         // setting defaults to fields
         id: null,
-        item_name: "",
-        item_description: "",
+        item_name: null,
+        item_description: null,
         claimed: false,
         item_link: null,
         item_image: null,
@@ -69,13 +69,32 @@ class App extends Component {
       .catch((error) => console.log(error));
   };
 
+  //checks if checkbox is checked or not
+  handleModalFieldChange = (e) => {
+    let { name, value } = e.target;
+    console.log(name, value);
+    if (e.target.type === "checkbox") {
+      value = e.target.checked;
+    }
+    const activeItem = { ...this.state.activeItem, [name]: value };
+    this.setState({ activeItem });
+  };
+
+  onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      this.setState({
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+    }
+  };
+
   // create toggle property
   toggle = (edit = false) => {
     this.setState({ modal: !this.state.modal });
   };
 
-  handleModalSubmit = (item) => {
-    console.log(item);
+  handleModalSubmit = (e) => {
+    this.addItem();
     // Edit item
     // if (item.id) {
     //   axios
@@ -83,10 +102,6 @@ class App extends Component {
     //     .then((response) => this.refreshList())
     //     .catch((error) => console.log(error));
     // }
-    // axios
-    //   .post("http://localhost:8000/api/create-item/", item)
-    //   .then((response) => this.refreshList())
-    //   .catch((error) => console.log(error));
   };
 
   handleDelete = (item) => {
@@ -97,8 +112,17 @@ class App extends Component {
   };
 
   addItem = () => {
-    // const item = { item_name: "", modal: !this.state.modal };
-    // this.setState({ activeItem: item, modal: !this.state.modal });
+    const item = this.state.activeItem;
+    axios
+      .post("http://localhost:8000/api/create-item/", item)
+      .then((response) => {
+        // const updatedList = this.state.wishList.push(item)
+        this.setState({ wishList: this.state.wishList.concat(item) });
+        this.renderItems();
+        this.toggle();
+        // this.refreshList()
+      })
+      .catch((error) => console.log(error));
   };
 
   editItem = (item) => {
@@ -165,6 +189,7 @@ class App extends Component {
         {this.state.modal ? (
           <Modal
             activeItem={this.state.activeItem}
+            handleFieldChange={this.handleModalFieldChange}
             toggle={this.toggle}
             onSave={this.handleModalSubmit}
           />
