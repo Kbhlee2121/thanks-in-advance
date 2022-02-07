@@ -54,7 +54,7 @@ class App extends Component {
       },
       wishList: [],
       // editing lets us know if we're editing or submitting an item
-      // editing: false,
+      editing: false,
     };
   }
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
@@ -87,6 +87,7 @@ class App extends Component {
   handleModalFieldChange = (e) => {
     console.log(e, e.target);
     let { name, value } = e.target;
+    console.log(name, value);
     if (e.target.type === "checkbox") {
       // const checkbox = e.target;
       // displays check
@@ -101,8 +102,10 @@ class App extends Component {
     }
     //if url
     // if file
-    const activeItem = { ...this.state.activeItem, [name]: value };
-    this.setState({ activeItem });
+
+    const updatedItem = { ...this.state.activeItem, [name]: value };
+    console.log(`This is the active item ${JSON.stringify(updatedItem)}`);
+    this.setState({ activeItem: updatedItem });
   };
 
   onImageChange = (event) => {
@@ -114,11 +117,12 @@ class App extends Component {
   };
 
   // create toggle property
-  toggle = (edit = false) => {
+  toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
 
   handleModalSubmit = (e) => {
+    // this.state.isEditing ?
     this.addItem();
     // Edit item
     // if (item.id) {
@@ -142,6 +146,7 @@ class App extends Component {
       .post("http://localhost:8000/api/create-item/", item)
       .then((response) => {
         // const updatedList = this.state.wishList.push(item)
+        //concat adds item to end of list
         this.setState({ wishList: this.state.wishList.concat(item) });
         this.renderItems();
         this.toggle();
@@ -152,7 +157,30 @@ class App extends Component {
 
   editItem = (item) => {
     console.log(item);
-    this.setState({ activeItem: item, modal: !this.state.modal });
+    this.setState({
+      editing: true,
+      activeItem: item,
+      modal: !this.state.modal,
+    });
+  };
+
+  updateItem = () => {
+    const item = this.state.activeItem;
+    const foundItem = this.state.wishList.find(
+      (wishListItem) => item.id === wishListItem.id
+    );
+    if (foundItem) {
+      axios
+        .put(`http://localhost:8000/api/items/${item.id}/`, item)
+        .then((response) => {
+          this.renderItems();
+          this.resetActiveItem();
+          this.setState({ editing: false });
+        })
+        .catch((error) => console.log(error));
+    } else {
+      console.log("Item not found");
+    }
   };
 
   // rendering items in the wishlist
@@ -218,6 +246,7 @@ class App extends Component {
             handleFieldChange={this.handleModalFieldChange}
             toggle={this.toggle}
             onSave={this.handleModalSubmit}
+            isEditing={this.state.editing}
           />
         ) : null}
       </main>

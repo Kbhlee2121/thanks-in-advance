@@ -15,17 +15,21 @@ class ItemModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: this.props.activeItem,
+      // activeItem: this.props.activeItem,
     };
   }
 
   //toggle for if the modal is on or off
   render() {
     // toggle and save the changes which or from this.prop
-    const { toggle, onSave } = this.props;
+    const { toggle, onSave, isEditing, activeItem } = this.props;
     return (
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Add Item</ModalHeader>
+        {isEditing ? (
+          <ModalHeader toggle={toggle}>Edit Item</ModalHeader>
+        ) : (
+          <ModalHeader toggle={toggle}>Add Item</ModalHeader>
+        )}
         <ModalBody>
           <Form>
             {/* wishlist label? */}
