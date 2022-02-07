@@ -70,23 +70,23 @@ class App extends Component {
   };
 
   // create toggle property
-  toggle = () => {
+  toggle = (edit = false) => {
     this.setState({ modal: !this.state.modal });
   };
 
-  handleSubmit = (item) => {
-    this.toggle();
+  handleModalSubmit = (item) => {
+    console.log(item);
     // Edit item
-    if (item.id) {
-      axios
-        .put(`http://localhost:8000/api/items/${item.id}/`, item)
-        .then((response) => this.refreshList())
-        .catch((error) => console.log(error));
-    }
-    axios
-      .post("http://localhost:8000/api/create-item/", item)
-      .then((response) => this.refreshList())
-      .catch((error) => console.log(error));
+    // if (item.id) {
+    //   axios
+    //     .put(`http://localhost:8000/api/items/${item.id}/`, item)
+    //     .then((response) => this.refreshList())
+    //     .catch((error) => console.log(error));
+    // }
+    // axios
+    //   .post("http://localhost:8000/api/create-item/", item)
+    //   .then((response) => this.refreshList())
+    //   .catch((error) => console.log(error));
   };
 
   handleDelete = (item) => {
@@ -96,9 +96,9 @@ class App extends Component {
       .catch((error) => console.log(error));
   };
 
-  createItem = () => {
-    const item = { item_name: "", modal: !this.state.modal };
-    this.setState({ activeItem: item, modal: !this.state.modal });
+  addItem = () => {
+    // const item = { item_name: "", modal: !this.state.modal };
+    // this.setState({ activeItem: item, modal: !this.state.modal });
   };
 
   editItem = (item) => {
@@ -121,7 +121,7 @@ class App extends Component {
         <span>
           <button
             className="btn btn-info mr-2 btn-sm"
-            onClick={(id) => this.handleSubmit(id)}
+            onClick={(item) => this.editItem(item)}
           >
             Edit
           </button>
@@ -150,10 +150,10 @@ class App extends Component {
               name="search"
               placeholder="Search item..."
             />
-            <button className="btn btn-warning" onClick={this.handleSubmit}>
-              Add Item
-            </button>
           </form>
+          <button className="btn btn-warning" onClick={this.toggle}>
+            Add Item
+          </button>
         </div>
         <div id="list-wrapper">
           <ul className="list-group list-group-flush">{this.renderItems()}</ul>
@@ -166,7 +166,7 @@ class App extends Component {
           <Modal
             activeItem={this.state.activeItem}
             toggle={this.toggle}
-            onSave={this.handleSubmit}
+            onSave={this.handleModalSubmit}
           />
         ) : null}
       </main>
