@@ -67,8 +67,8 @@ class App extends Component {
     const emptyItem = {
       // setting defaults to fields
       id: null,
-      item_name: null,
-      item_description: null,
+      item_name: "",
+      item_description: "",
       claimed: false,
       item_link: null,
       item_image: null,
@@ -85,9 +85,9 @@ class App extends Component {
 
   //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
-    console.log(e, e.target);
+    // console.log(e, e.target);
     let { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     if (e.target.type === "checkbox") {
       // const checkbox = e.target;
       // displays check
@@ -104,7 +104,6 @@ class App extends Component {
     // if file
 
     const updatedItem = { ...this.state.activeItem, [name]: value };
-    console.log(`This is the active item ${JSON.stringify(updatedItem)}`);
     this.setState({ activeItem: updatedItem });
   };
 
@@ -121,9 +120,8 @@ class App extends Component {
     this.setState({ modal: !this.state.modal });
   };
 
-  handleModalSubmit = (e) => {
-    // this.state.isEditing ?
-    this.addItem();
+  handleModalSubmit = () => {
+    this.state.editing ? this.updateItem() : this.addItem();
     // Edit item
     // if (item.id) {
     //   axios
@@ -166,16 +164,23 @@ class App extends Component {
 
   updateItem = () => {
     const item = this.state.activeItem;
-    const foundItem = this.state.wishList.find(
-      (wishListItem) => item.id === wishListItem.id
+    // const foundItem = this.state.wishList.find(
+    //   (wishListItem) => item.id === wishListItem.id
+    // );
+    const foundIndex = this.state.wishList.findIndex(
+      (wishListItem) => wishListItem.id === item.id
     );
-    if (foundItem) {
+    console.log(foundIndex);
+    if (foundIndex !== -1) {
       axios
-        .put(`http://localhost:8000/api/items/${item.id}/`, item)
+        .put(`http://localhost:8000/api/item-update/${item.id}/`, item)
         .then((response) => {
-          this.renderItems();
+          const wishListCopy = [...this.state.wishList];
+          wishListCopy[foundIndex] = item;
           this.resetActiveItem();
-          this.setState({ editing: false });
+          this.setState({ editing: false, wishList: wishListCopy });
+          this.toggle();
+          this.renderItems();
         })
         .catch((error) => console.log(error));
     } else {

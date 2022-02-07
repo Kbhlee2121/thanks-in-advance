@@ -41,7 +41,7 @@ class ItemModal extends Component {
                 name="item_name"
                 id="item-name"
                 onChange={this.props.handleFieldChange}
-                value={this.state.activeItem.item_name}
+                value={activeItem.item_name}
                 placeholder="Enter Item Name"
               />
             </FormGroup>
@@ -52,7 +52,7 @@ class ItemModal extends Component {
                 type="textarea"
                 name="item_description"
                 id="description"
-                value={this.state.activeItem.item_description}
+                value={activeItem.item_description}
                 onChange={this.props.handleFieldChange}
                 placeholder="Describe the item"
               />
@@ -65,7 +65,7 @@ class ItemModal extends Component {
                 id="item-link"
                 type="url"
                 name="item_link"
-                value={this.state.activeItem.item_link}
+                value={activeItem.item_link}
                 onChange={this.props.handleFieldChange}
                 placeholder="Enter a link to the item"
               />
@@ -77,7 +77,7 @@ class ItemModal extends Component {
                 id="item-image"
                 type="file"
                 name="item_image"
-                value={this.state.activeItem.item_image}
+                value={activeItem.item_image}
                 onChange={this.props.handleFieldChange}
               />
             </FormGroup>
@@ -87,7 +87,7 @@ class ItemModal extends Component {
                 <Input
                   type="checkbox"
                   name="claimed"
-                  defaultChecked={this.state.activeItem.claimed}
+                  defaultChecked={activeItem.claimed}
                   onClick={this.props.handleFieldChange}
                 />
                 Claimed

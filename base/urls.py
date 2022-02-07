@@ -24,11 +24,11 @@ urlpatterns = [
     #view items of a wishlist
     path('items-wishlist/<str:list>/', views.viewWishlistItems, name="view-wishlist-items"),
     # create item
-    path('create-item/', views.createItem, name="create-item"),
+    path('item-create/', views.createItem, name="create-item"),
     # update item
-    path('update-item/<str:pk>/', views.updateItem, name="update-item"),
+    path('item-update/<str:pk>/', views.updateItem, name="update-item"),
     # delete item
-    path('delete-item/<str:pk>/', views.deleteItem, name="delete-item"),
+    path('item-delete/<str:pk>/', views.deleteItem, name="delete-item"),
     # path('view-item/<str:list>/<str:item_id>/', views.viewItem, name="detail-view-item"),
 
     # path('', views.UserProf/ileView.as_view({'get': 'get_userprofile'})),
