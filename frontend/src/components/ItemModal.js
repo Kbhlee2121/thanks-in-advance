@@ -83,7 +83,7 @@ class ItemModal extends Component {
                 <Input
                   type="checkbox"
                   name="claimed"
-                  checked={this.state.activeItem.claimed}
+                  defaultChecked={this.state.activeItem.claimed}
                   onClick={this.props.handleFieldChange}
                 />
                 Claimed

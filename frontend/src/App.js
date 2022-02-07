@@ -151,6 +151,7 @@ class App extends Component {
   };
 
   editItem = (item) => {
+    console.log(item);
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
 
@@ -170,7 +171,7 @@ class App extends Component {
         <span>
           <button
             className="btn btn-info mr-2 btn-sm"
-            onClick={(item) => this.editItem(item)}
+            onClick={(e) => this.editItem(item)}
           >
             Edit
           </button>
@@ -194,7 +195,7 @@ class App extends Component {
             <input
               className="form-control"
               id="search-item"
-              value={this.state.activeItem.item_name}
+              // value={this.state.activeItem.item_name}
               type="text"
               name="search"
               placeholder="Search item..."
