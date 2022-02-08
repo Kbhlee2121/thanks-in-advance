@@ -275,6 +275,8 @@ class App extends Component {
   };
 
   render() {
+    // ensures copyright year is always up to date. date = new date object
+    const date = new Date();
     return (
       <main className="container">
         <h1>Thanks in Advance</h1>
@@ -298,7 +300,7 @@ class App extends Component {
           <ul className="list-group list-group-flush">{this.renderItems()}</ul>
         </div>
         <footer className="my-5 mb-2 text-center">
-          Copyright 2022 &copy; All Rights Reserved{" "}
+          Copyright {date.getFullYear()} &copy; All Rights Reserved{" "}
         </footer>
         {/* activeItem represents item that is to be edited. Toggle determines state (open or closed) of Modal. onSave saves item */}
         {this.state.modal ? (
