@@ -125,6 +125,7 @@ def viewAllItems(request):
     serializer = ItemSerializer(items, many=True)
     return Response(serializer.data)
 
+# detail view of one item
 @api_view(['GET'])
 def itemDetail(request, pk):
     item = Item.objects.get(id=pk)

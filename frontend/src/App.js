@@ -76,13 +76,6 @@ class App extends Component {
     this.setState({ activeItem: emptyItem });
   };
 
-  getItemsList = () => {
-    axios
-      .get("http://localhost:8000/api/items/")
-      .then((response) => this.setState({ wishList: response.data }))
-      .catch((error) => console.log(error));
-  };
-
   //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
     // console.log(e, e.target);
@@ -131,19 +124,24 @@ class App extends Component {
     // }
   };
 
-  deleteItem = (item) => {
+  getItemsList = () => {
+    axios
+      .get("http://localhost:8000/api/items/")
+      .then((response) => this.setState({ wishList: response.data }))
+      .catch((error) => console.log(error));
+  };
+
+  detailViewItem = (item) => {
     const foundItem = this.state.wishList.find(
       (wishListItem) => item.id === wishListItem.id
     );
     if (foundItem) {
       axios
-        .delete(`http://localhost:8000/api/item-delete/${item.id}/`)
+        .get(`http://localhost:8000/api/items/${item.id}/`, item)
         .then((response) => {
-          const filteredWishList = this.state.wishList.filter(
-            (wishListItem) => wishListItem.id !== foundItem.id
-          );
-          this.setState({ wishList: filteredWishList });
-          this.renderItems();
+          this.setState({ activeItem: foundItem });
+          this.toggle();
+          this.resetActiveItem();
         })
         .catch((error) => console.log(error));
     } else {
@@ -201,6 +199,26 @@ class App extends Component {
     }
   };
 
+  deleteItem = (item) => {
+    const foundItem = this.state.wishList.find(
+      (wishListItem) => item.id === wishListItem.id
+    );
+    if (foundItem) {
+      axios
+        .delete(`http://localhost:8000/api/item-delete/${item.id}/`)
+        .then((response) => {
+          const filteredWishList = this.state.wishList.filter(
+            (wishListItem) => wishListItem.id !== foundItem.id
+          );
+          this.setState({ wishList: filteredWishList });
+          this.renderItems();
+        })
+        .catch((error) => console.log(error));
+    } else {
+      console.log("Item not found");
+    }
+  };
+
   // rendering items in the wishlist
   renderItems = () => {
     const newItems = this.state.wishList;
@@ -211,9 +229,13 @@ class App extends Component {
       >
         {/* add onClick for getlist */}
         {item.claimed === false ? (
-          <span>{item.item_name}</span>
+          <span onClick={(e) => this.detailViewItem(item)}>
+            {item.item_name}
+          </span>
         ) : (
-          <strike>{item.item_name}</strike>
+          <strike onClick={(e) => this.detailViewItem(item)}>
+            {item.item_name}
+          </strike>
         )}
         <span>
           <button
