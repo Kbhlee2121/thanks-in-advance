@@ -24,7 +24,7 @@ class ItemModal extends Component {
     // toggle and save the changes which or from this.prop
     const { toggle, onSave, isEditing, activeItem } = this.props;
     return (
-      <Modal isOpen={true} toggle={toggle}>
+      <Modal isOpen={true}>
         {isEditing ? (
           <ModalHeader toggle={toggle}>Edit Item</ModalHeader>
         ) : (
@@ -76,8 +76,9 @@ class ItemModal extends Component {
               <Input
                 id="item-image"
                 type="file"
+                accept=".png,.jpg,.jpeg"
                 name="item_image"
-                value={activeItem.item_image}
+                // value={activeItem.item_image}
                 onChange={this.props.handleFieldChange}
               />
             </FormGroup>

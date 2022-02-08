@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Modal from "./components/ItemModal";
+import ViewItemModal from "./components/ViewItemModal";
 import axios from "axios";
 
 // const items = [
@@ -55,6 +56,7 @@ class App extends Component {
       wishList: [],
       // editing lets us know if we're editing or submitting an item
       editing: false,
+      viewing: false,
     };
   }
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
@@ -78,50 +80,48 @@ class App extends Component {
 
   //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
-    // console.log(e, e.target);
     let { name, value } = e.target;
     // console.log(name, value);
     if (e.target.type === "checkbox") {
-      // const checkbox = e.target;
-      // displays check
-      // checkbox.click();
       // changes default in the state for edits
       const checked = !this.state.activeItem.claimed;
       e.target.checked = checked;
       const activeItem = { ...this.state.activeItem, claimed: checked };
       this.setState({ activeItem });
-      // const checked = !this.state.claimed;
       return;
+    } else if (e.target.type === "file") {
+      this.onImageChange(e);
+      return;
+    } else {
+      const updatedItem = { ...this.state.activeItem, [name]: value };
+      this.setState({ activeItem: updatedItem });
     }
-    //if url
-    // if file
-
-    const updatedItem = { ...this.state.activeItem, [name]: value };
-    this.setState({ activeItem: updatedItem });
   };
 
   onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+      const activeItem = {
+        ...this.state.activeItem,
+        item_image: URL.createObjectURL(image),
+      };
       this.setState({
-        image: URL.createObjectURL(event.target.files[0]),
+        activeItem,
       });
     }
   };
 
   // create toggle property
   toggle = () => {
+    // If the modal is open and we're toggling it off, we should reset the active item
+    if (this.state.modal) {
+      this.resetActiveItem();
+    }
     this.setState({ modal: !this.state.modal });
   };
 
   handleModalSubmit = () => {
     this.state.editing ? this.updateItem() : this.addItem();
-    // Edit item
-    // if (item.id) {
-    //   axios
-    //     .put(`http://localhost:8000/api/items/${item.id}/`, item)
-    //     .then((response) => this.refreshList())
-    //     .catch((error) => console.log(error));
-    // }
   };
 
   getItemsList = () => {
@@ -136,17 +136,18 @@ class App extends Component {
       (wishListItem) => item.id === wishListItem.id
     );
     if (foundItem) {
-      axios
-        .get(`http://localhost:8000/api/items/${item.id}/`, item)
-        .then((response) => {
-          this.setState({ activeItem: foundItem });
-          this.toggle();
-          this.resetActiveItem();
-        })
-        .catch((error) => console.log(error));
-    } else {
-      console.log("Item not found");
+      this.setState({ activeItem: foundItem, viewing: true });
+      this.toggle();
     }
+  };
+
+  setAddItemState = () => {
+    this.setState({
+      editing: false,
+      viewing: false,
+    });
+    // this.resetActiveItem();
+    this.toggle();
   };
 
   addItem = () => {
@@ -159,36 +160,32 @@ class App extends Component {
         this.setState({ wishList: this.state.wishList.concat(item) });
         this.renderItems();
         this.toggle();
-        this.resetActiveItem();
+        // this.resetActiveItem();
       })
       .catch((error) => console.log(error));
   };
 
-  editItem = (item) => {
-    console.log(item);
+  setEditItemState = (item) => {
     this.setState({
       editing: true,
+      viewing: false,
       activeItem: item,
-      modal: !this.state.modal,
     });
+    this.toggle();
   };
 
   updateItem = () => {
     const item = this.state.activeItem;
-    // const foundItem = this.state.wishList.find(
-    //   (wishListItem) => item.id === wishListItem.id
-    // );
     const foundIndex = this.state.wishList.findIndex(
       (wishListItem) => wishListItem.id === item.id
     );
-    console.log(foundIndex);
     if (foundIndex !== -1) {
       axios
         .put(`http://localhost:8000/api/item-update/${item.id}/`, item)
         .then((response) => {
           const wishListCopy = [...this.state.wishList];
           wishListCopy[foundIndex] = item;
-          this.resetActiveItem();
+          // this.resetActiveItem();
           this.setState({ editing: false, wishList: wishListCopy });
           this.toggle();
           this.renderItems();
@@ -240,7 +237,7 @@ class App extends Component {
         <span>
           <button
             className="btn btn-info mr-2 btn-sm"
-            onClick={(e) => this.editItem(item)}
+            onClick={(e) => this.setEditItemState(item)}
           >
             Edit
           </button>
@@ -270,7 +267,7 @@ class App extends Component {
               placeholder="Search item..."
             />
           </form>
-          <button className="btn btn-warning" onClick={this.toggle}>
+          <button className="btn btn-warning" onClick={this.setAddItemState}>
             Add Item
           </button>
         </div>
@@ -282,13 +279,20 @@ class App extends Component {
         </footer>
         {/* activeItem represents item that is to be edited. Toggle determines state (open or closed) of Modal. onSave saves item */}
         {this.state.modal ? (
-          <Modal
-            activeItem={this.state.activeItem}
-            handleFieldChange={this.handleModalFieldChange}
-            toggle={this.toggle}
-            onSave={this.handleModalSubmit}
-            isEditing={this.state.editing}
-          />
+          this.state.viewing ? (
+            <ViewItemModal
+              activeItem={this.state.activeItem}
+              toggle={this.toggle}
+            />
+          ) : (
+            <Modal
+              activeItem={this.state.activeItem}
+              handleFieldChange={this.handleModalFieldChange}
+              toggle={this.toggle}
+              onSave={this.handleModalSubmit}
+              isEditing={this.state.editing}
+            />
+          )
         ) : null}
       </main>
     );
