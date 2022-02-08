@@ -54,6 +54,7 @@ class App extends Component {
         // item_image: null,
       },
       wishList: [],
+      filteredWishList: [],
       // editing lets us know if we're editing or submitting an item
       editing: false,
       viewing: false,
@@ -216,9 +217,30 @@ class App extends Component {
     }
   };
 
+  searchWishList = (e) => {
+    const searchTerm = e.target.value;
+    if (searchTerm.length > 0) {
+      const filtered = this.state.wishList.filter((item) =>
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      if (filtered.length > 0) {
+        this.setState({ filteredWishList: filtered });
+        this.renderItems();
+      }
+    } else {
+      this.setState({ filteredWishList: [] });
+      this.renderItems();
+    }
+  };
+
   // rendering items in the wishlist
   renderItems = () => {
-    const newItems = this.state.wishList;
+    let newItems = [];
+    if (this.state.filteredWishList.length > 0) {
+      newItems = this.state.filteredWishList;
+    } else {
+      newItems = this.state.wishList;
+    }
     return newItems.map((item) => (
       <li
         key={item.id}
@@ -265,6 +287,7 @@ class App extends Component {
               type="text"
               name="search"
               placeholder="Search item..."
+              onChange={this.searchWishList}
             />
           </form>
           <button className="btn btn-warning" onClick={this.setAddItemState}>
