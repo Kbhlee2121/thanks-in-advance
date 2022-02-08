@@ -42,7 +42,7 @@ class Item(models.Model):
     claimed = models.BooleanField(default=False)
     item_link = models.URLField(null=True, blank=True)
     item_description = models.TextField(null=True, blank=True)
-    item_image = models.FileField(null=True, blank=True)
+    item_image = models.URLField(null=True, blank=True)
     
     def __str__(self):
         return self.item_name
