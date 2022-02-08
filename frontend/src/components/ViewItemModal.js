@@ -10,6 +10,7 @@ import {
   CardLink,
   CardBody,
   CardImg,
+  CardText,
 } from "reactstrap";
 
 class ViewItemModal extends Component {
@@ -49,8 +50,10 @@ class ViewItemModal extends Component {
                 src={activeItem.item_image}
               />
 
-              <CardTitle tag="h5">Claimed</CardTitle>
-              <Input type="checkbox"></Input>
+              <CardTitle tag="h5">Claimed Status</CardTitle>
+              <CardText>
+                {activeItem.claimed ? "Item Claimed" : "Item Not Claimed"}
+              </CardText>
             </CardBody>
           </Card>
         </ModalBody>

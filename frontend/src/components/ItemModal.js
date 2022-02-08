@@ -75,11 +75,16 @@ class ItemModal extends Component {
               <Label for="item-image">Image</Label>
               <Input
                 id="item-image"
-                type="file"
-                accept=".png,.jpg,.jpeg"
+                type="url"
                 name="item_image"
-                // value={activeItem.item_image}
+                value={activeItem.item_image}
                 onChange={this.props.handleFieldChange}
+                placeholder="Enter an image URL"
+                // type="file"
+                // accept=".png,.jpg,.jpeg"
+                // name="item_image"
+                // // value={activeItem.item_image}
+                // onChange={this.props.handleFieldChange}
               />
             </FormGroup>
             {/* claimed label */}
