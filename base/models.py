@@ -12,8 +12,9 @@ class User(models.Model):
     full_name = models.CharField(max_length=50)
     pronouns = models.CharField(max_length=50, null=True, blank=True)
     phonetics = models.CharField(max_length=50, null=True, blank=True)
-    username = models.CharField(max_length=20, min_length=3)
-    password = models.CharField(max_length=127, min_length=8)
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=127)
+    email = models.EmailField(max_length=254)
     fav_color = models.CharField(max_length=50, null=True, blank=True)
     fav_color_to_wear = models.CharField(max_length=50, null=True, blank=True)
     fav_food_snack = models.TextField(null=True, blank=True)
@@ -21,7 +22,7 @@ class User(models.Model):
     clothes_top_size = models.CharField(max_length=50, null=True, blank=True)
     clothes_bottom_size = models.CharField(max_length=50, null=True, blank=True)
     dont_want_list = models.TextField(null=True, blank=True)
-    pinterest_link = models.URLField(null=True, blank=True)
+    pinterest_link = models.CharField(max_length= 20, null=True, blank=True)
     amazon_link = models.URLField(null=True, blank=True)
     #wishlists 
 

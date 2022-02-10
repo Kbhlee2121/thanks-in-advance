@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets, status
-from .serializers import UserProfileSerializer, WishListSerializer, ItemSerializer
-from .models import UserProfile, WishList, Item
+from .serializers import UserSerializer, WishListSerializer, ItemSerializer
+from .models import User, WishList, Item
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import UserProfileSerializer, WishListSerializer, ItemSerializer
 from base import serializers
 
 # Create your views here. Processes requests and returning responses
@@ -46,15 +45,15 @@ def apiOverview(request):
 # pk = user id when user system added
 # users currently allowed to have multiple profiles
 @api_view(['GET'])
-def viewUserProfile(request, pk):
-    userprofile = UserProfile.objects.get(id=pk)
-    serializer = UserProfileSerializer(userprofile)
+def viewUser(request, pk):
+    userprofile = User.objects.get(id=pk)
+    serializer = UserSerializer(userprofile)
     return Response(serializer.data)
 
 # create user profile (need to ensure users only make 1)
 @api_view(['POST'])
 def createUserProfile(request):
-    serializer = UserProfileSerializer(data=request.data)
+    serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
@@ -62,11 +61,11 @@ def createUserProfile(request):
 @api_view(['PUT'])
 def updateUserProfile(request, pk):
     try:
-        userprofile = UserProfile.objects.get(id=pk)
-    except UserProfile.DoesNotExist:
+        userprofile = User.objects.get(id=pk)
+    except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = UserProfileSerializer(userprofile, data=request.data)
+    serializer = UserSerializer(userprofile, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)

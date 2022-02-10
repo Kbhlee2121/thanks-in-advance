@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Item, UserProfile, WishList
+from .models import Item, User, WishList
 
 #Serializers convert model instances to JSON so frontend can work with received data
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
+        model = User
         fields = '__all__'
 
 class WishListSerializer(serializers.ModelSerializer):

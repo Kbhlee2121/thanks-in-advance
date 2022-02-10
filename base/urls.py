@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
-    path('user-profile/<str:pk>/', views.viewUserProfile, name="view-userprofile"),
+    path('user-profile/<str:pk>/', views.viewUser, name="view-userprofile"),
     path('profile-create/', views.createUserProfile, name="create-profile"),
     path('profile-update/<str:pk>/', views.updateUserProfile, name="update-profile"),
 

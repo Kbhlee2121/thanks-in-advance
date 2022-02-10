@@ -2,42 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import Modal from "./components/ItemModal";
 import ViewItemModal from "./components/ViewItemModal";
+import Wishlist from "./components/Wishlist";
 import axios from "axios";
-
-// const items = [
-//   {
-//     id: 1,
-//     item_name: "sweater",
-//     item_description: "cropped earth color",
-//     claimed: false,
-//     item_link: null,
-//     item_image: null,
-//   },
-//   {
-//     id: 2,
-//     item_name: "waterbottle",
-//     item_description: "pink hydroflask",
-//     claimed: true,
-//     item_link: null,
-//     item_image: null,
-//   },
-//   {
-//     id: 3,
-//     item_name: "lotion",
-//     item_description: "for sensitive skin",
-//     claimed: false,
-//     item_link: null,
-//     item_image: null,
-//   },
-//   {
-//     id: 4,
-//     item_name: "speakers",
-//     item_description: "small and waterproof",
-//     claimed: true,
-//     item_link: null,
-//     item_image: null,
-//   },
-// ];
 
 class App extends Component {
   constructor(props) {
@@ -55,7 +21,7 @@ class App extends Component {
       },
       wishList: [],
       filteredWishList: [],
-      // editing lets us know if we're editing or submitting an item
+      // // editing lets us know if we're editing or submitting an item
       editing: false,
       viewing: false,
     };
@@ -79,7 +45,7 @@ class App extends Component {
     this.setState({ activeItem: emptyItem });
   };
 
-  //checks if checkbox is checked or not
+  // //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
     let { name, value } = e.target;
     // console.log(name, value);
@@ -99,18 +65,18 @@ class App extends Component {
     }
   };
 
-  onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const image = event.target.files[0];
-      const activeItem = {
-        ...this.state.activeItem,
-        item_image: URL.createObjectURL(image),
-      };
-      this.setState({
-        activeItem,
-      });
-    }
-  };
+  // onImageChange = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const image = event.target.files[0];
+  //     const activeItem = {
+  //       ...this.state.activeItem,
+  //       item_image: URL.createObjectURL(image),
+  //     };
+  //     this.setState({
+  //       activeItem,
+  //     });
+  //   }
+  // };
 
   // create toggle property
   toggle = () => {
@@ -122,6 +88,24 @@ class App extends Component {
   };
 
   handleModalSubmit = () => {
+    // Backend does not like _ in Urls or ones that are over 200 characters
+    // This should catch most* Urls
+    if (
+      this.state.activeItem.item_link &&
+      this.state.activeItem.item_link.length > 200
+    ) {
+      let shortLink = this.state.activeItem.item_link
+        .split("?")[0] // most things after ? is optional
+        .slice(0, 200) // ensure max length
+        .replace(/_/g, ""); // remove all underscores
+      console.log(`Link too long, new link is: ${shortLink}`, shortLink.length);
+      this.setState({
+        activeItem: {
+          item_link: shortLink,
+        },
+      });
+    }
+
     this.state.editing ? this.updateItem() : this.addItem();
   };
 
@@ -156,7 +140,6 @@ class App extends Component {
     axios
       .post("http://localhost:8000/api/item-create/", item)
       .then((response) => {
-        // const updatedList = this.state.wishList.push(item)
         //concat adds item to end of list
         this.setState({ wishList: this.state.wishList.concat(item) });
         this.renderItems();
@@ -279,7 +262,9 @@ class App extends Component {
     const date = new Date();
     return (
       <main className="container">
-        <h1>Thanks in Advance</h1>
+        <header>
+          <h1>Thanks in Advance</h1>
+        </header>
         <div className="item-container">
           <form id="form">
             <input
@@ -302,7 +287,7 @@ class App extends Component {
         <footer className="my-5 mb-2 text-center">
           Copyright {date.getFullYear()} &copy; All Rights Reserved{" "}
         </footer>
-        {/* activeItem represents item that is to be edited. Toggle determines state (open or closed) of Modal. onSave saves item */}
+        {/* {/* activeItem represents item that is to be edited. Toggle determines state (open or closed) of Modal. onSave saves item */}
         {this.state.modal ? (
           this.state.viewing ? (
             <ViewItemModal
