@@ -1,16 +1,19 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from datetime import datetime
 
 
 # Create your models here.
 
-class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+class User(models.Model):
+    # can remove user attr
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     # the name other users will see
     full_name = models.CharField(max_length=50)
     pronouns = models.CharField(max_length=50, null=True, blank=True)
     phonetics = models.CharField(max_length=50, null=True, blank=True)
+    username = models.CharField(max_length=20, min_length=3)
+    password = models.CharField(max_length=127, min_length=8)
     fav_color = models.CharField(max_length=50, null=True, blank=True)
     fav_color_to_wear = models.CharField(max_length=50, null=True, blank=True)
     fav_food_snack = models.TextField(null=True, blank=True)
