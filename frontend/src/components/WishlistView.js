@@ -1,33 +1,27 @@
 import React, { Component } from "react";
-import "./App.css";
-import ItemModal from "./components/ItemModal";
-import ViewItemModal from "./components/ViewItemModal";
+import Item from "./Item";
+import ViewItemModal from "./ViewItemModal";
+import ItemModal from "./ItemModal";
 import axios from "axios";
 
-class App extends Component {
+//displays list of items of selected wishlist. Handles CRUD Modals of Items
+class WishlistViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeWishlist: this.props.activeWishlist,
+      itemsList: [],
+      filteredList: [],
+      activeItem: {},
       modal: false,
-      activeItem: {
-        // // setting defaults to fields
-        // id: null,
-        // item_name: null,
-        // item_description: null,
-        // claimed: false,
-        // item_link: null,
-        // item_image: null,
-      },
-      wishList: [],
-      filteredWishList: [],
-      // // editing lets us know if we're editing or submitting an item
+      // editing lets us know if we're editing or submitting an item
       editing: false,
       viewing: false,
     };
   }
+
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
   componentDidMount() {
-    this.resetActiveItem();
     this.getItemsList();
   }
 
@@ -40,11 +34,11 @@ class App extends Component {
       claimed: false,
       item_link: null,
       item_image: null,
+      wishlist: null,
     };
     this.setState({ activeItem: emptyItem });
   };
 
-  // //checks if checkbox is checked or not
   handleModalFieldChange = (e) => {
     let { name, value } = e.target;
     // console.log(name, value);
@@ -64,20 +58,6 @@ class App extends Component {
     }
   };
 
-  // onImageChange = (event) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     const image = event.target.files[0];
-  //     const activeItem = {
-  //       ...this.state.activeItem,
-  //       item_image: URL.createObjectURL(image),
-  //     };
-  //     this.setState({
-  //       activeItem,
-  //     });
-  //   }
-  // };
-
-  // create toggle property
   toggle = () => {
     // If the modal is open and we're toggling it off, we should reset the active item
     if (this.state.modal) {
@@ -108,16 +88,19 @@ class App extends Component {
     this.state.editing ? this.updateItem() : this.addItem();
   };
 
+  // list of items of selected wishlist
   getItemsList = () => {
     axios
-      .get("http://localhost:8000/api/items/")
-      .then((response) => this.setState({ wishList: response.data }))
+      .get(
+        `http://localhost:8000/api/items-wishlist/${this.state.activeWishlist.id}`
+      )
+      .then((response) => this.setState({ itemsList: response.data }))
       .catch((error) => console.log(error));
   };
 
   detailViewItem = (item) => {
-    const foundItem = this.state.wishList.find(
-      (wishListItem) => item.id === wishListItem.id
+    const foundItem = this.state.itemsList.find(
+      (listItem) => item.id === listItem.id
     );
     if (foundItem) {
       this.setState({ activeItem: foundItem, viewing: true });
@@ -135,13 +118,13 @@ class App extends Component {
   };
 
   addItem = () => {
-    const item = this.state.activeItem;
-
+    let item = this.state.activeItem;
+    item.wishlist_id = this.state.activeWishlist;
     axios
       .post("http://localhost:8000/api/item-create/", item)
       .then((response) => {
         //concat adds item to end of list
-        this.setState({ wishList: this.state.wishList.concat(item) });
+        this.setState({ itemsList: this.state.itemsList.concat(item) });
         this.renderItems();
         this.toggle();
         // this.resetActiveItem();
@@ -160,17 +143,17 @@ class App extends Component {
 
   updateItem = () => {
     const item = this.state.activeItem;
-    const foundIndex = this.state.wishList.findIndex(
-      (wishListItem) => wishListItem.id === item.id
+    const foundIndex = this.state.itemsList.findIndex(
+      (listItem) => listItem.id === item.id
     );
     if (foundIndex !== -1) {
       axios
         .put(`http://localhost:8000/api/item-update/${item.id}/`, item)
         .then((response) => {
-          const wishListCopy = [...this.state.wishList];
-          wishListCopy[foundIndex] = item;
+          const listCopy = [...this.state.itemsList];
+          listCopy[foundIndex] = item;
           // this.resetActiveItem();
-          this.setState({ editing: false, wishList: wishListCopy });
+          this.setState({ editing: false, itemsList: listCopy });
           this.toggle();
           this.renderItems();
         })
@@ -181,17 +164,17 @@ class App extends Component {
   };
 
   deleteItem = (item) => {
-    const foundItem = this.state.wishList.find(
-      (wishListItem) => item.id === wishListItem.id
+    const foundItem = this.state.itemsList.find(
+      (listItem) => item.id === listItem.id
     );
     if (foundItem) {
       axios
         .delete(`http://localhost:8000/api/item-delete/${item.id}/`)
         .then((response) => {
-          const filteredWishList = this.state.wishList.filter(
-            (wishListItem) => wishListItem.id !== foundItem.id
+          const filteredList = this.state.itemsList.filter(
+            (listItem) => listItem.id !== foundItem.id
           );
-          this.setState({ wishList: filteredWishList });
+          this.setState({ itemsList: filteredList });
           this.renderItems();
         })
         .catch((error) => console.log(error));
@@ -203,15 +186,15 @@ class App extends Component {
   searchWishList = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm.length > 0) {
-      const filtered = this.state.wishList.filter((item) =>
+      const filtered = this.state.itemsList.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       if (filtered.length > 0) {
-        this.setState({ filteredWishList: filtered });
+        this.setState({ filteredList: filtered });
         this.renderItems();
       }
     } else {
-      this.setState({ filteredWishList: [] });
+      this.setState({ filteredList: [] });
       this.renderItems();
     }
   };
@@ -219,58 +202,29 @@ class App extends Component {
   // rendering items in the wishlist
   renderItems = () => {
     let newItems = [];
-    if (this.state.filteredWishList.length > 0) {
-      newItems = this.state.filteredWishList;
+    if (this.state.filteredList.length > 0) {
+      newItems = this.state.filteredList;
     } else {
-      newItems = this.state.wishList;
+      newItems = this.state.itemsList;
     }
     return newItems.map((item) => (
-      <li
-        key={item.id}
-        className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        {/* add onClick for getlist */}
-        {item.claimed === false ? (
-          <span onClick={(e) => this.detailViewItem(item)}>
-            {item.item_name}
-          </span>
-        ) : (
-          <strike onClick={(e) => this.detailViewItem(item)}>
-            {item.item_name}
-          </strike>
-        )}
-        <span>
-          <button
-            className="btn btn-info mr-2 btn-sm"
-            onClick={(e) => this.setEditItemState(item)}
-          >
-            Edit
-          </button>
-          <button
-            className="btn btn-danger mr-2 btn-sm"
-            onClick={(e) => this.deleteItem(item)}
-          >
-            Delete
-          </button>
-        </span>
-      </li>
+      <Item
+        item={item}
+        detailViewItem={this.detailViewItem}
+        setEditItemState={this.setEditItemState}
+        deleteItem={this.deleteItem}
+      />
     ));
   };
 
   render() {
-    // ensures copyright year is always up to date. date = new date object
-    const date = new Date();
     return (
-      <main className="container">
-        <header>
-          <h1>Thanks in Advance</h1>
-        </header>
+      <div>
         <div className="item-container">
           <form id="form">
             <input
               className="form-control"
               id="search-item"
-              // value={this.state.activeItem.item_name}
               type="text"
               name="search"
               placeholder="Search item..."
@@ -284,10 +238,7 @@ class App extends Component {
         <div id="list-wrapper">
           <ul className="list-group list-group-flush">{this.renderItems()}</ul>
         </div>
-        <footer className="my-5 mb-2 text-center">
-          Copyright {date.getFullYear()} &copy; All Rights Reserved{" "}
-        </footer>
-        {/* {/* activeItem represents item that is to be edited. Toggle determines state (open or closed) of Modal. onSave saves item */}
+
         {this.state.modal ? (
           this.state.viewing ? (
             <ViewItemModal
@@ -304,9 +255,9 @@ class App extends Component {
             />
           )
         ) : null}
-      </main>
+      </div>
     );
   }
 }
 
-export default App;
+export default WishlistViewer;

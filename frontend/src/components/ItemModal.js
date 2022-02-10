@@ -11,6 +11,7 @@ import {
   Label,
 } from "reactstrap";
 
+//Modal for Add and Edit Item
 class ItemModal extends Component {
   constructor(props) {
     super(props);

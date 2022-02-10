@@ -12,7 +12,7 @@ urlpatterns = [
     path('wishlist-update/<str:pk>/', views.updateWishlist, name="update-wishlist"),
     path('wishlist-delete/<str:pk>/', views.deleteWishlist, name="delete-wishlist"),
 
-    # add another <str:pk> for user specific
+    # view all wishlists
     path('wishlists/', views.viewAllWishlists, name="view-all-wishlists"),
 
     # ITEM PATHS

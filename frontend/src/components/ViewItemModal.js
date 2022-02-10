@@ -12,6 +12,7 @@ import {
   CardText,
 } from "reactstrap";
 
+//Modal for viewing and displaying Item (GET)
 class ViewItemModal extends Component {
   constructor(props) {
     super(props);
