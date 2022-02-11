@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import WishlistViewer from "./WishlistView";
+import WishlistViewer from "./WishlistViewer";
 import axios from "axios";
 import {
   CardGroup,
@@ -24,7 +24,11 @@ class WishlistManager extends Component {
 
   // to perform operations that need to be executed when DOM is updated
   //called only when component gets updated or when the props passed to it change in App.js
-  componentDidUpdate() {
+  // componentDidUpdate() {
+  //   this.getWishlists();
+  // }
+
+  componentDidMount() {
     this.getWishlists();
   }
 
@@ -67,30 +71,35 @@ class WishlistManager extends Component {
 
   render() {
     let newWishlists = this.state.wishlists;
-    return newWishlists.map((wishlist) => (
+    return (
       //cards for wishlists
       <div>
+        <Button color="warning" onClick={this.addWishlist}>
+          Add Wishlist
+        </Button>
         <CardGroup>
-          <Button color="warning" onClick={this.addWishlist}>
-            Add Wishlist
-          </Button>
-          <Card>
-            <CardBody>
-              <CardTitle tag="h5">{wishlist.title}</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">
-                Created: {wishlist.created}
-              </CardSubtitle>
-              <CardText>Description of wishlist</CardText>
-              <Button color="info">Edit Title</Button>
-              <Button color="primary">Edit Items</Button>
-              <Button color="danger">Delete</Button>
-            </CardBody>
-          </Card>
+          {newWishlists.map((wishlist) => {
+            return (
+              <Card key={wishlist.id}>
+                <CardBody>
+                  <CardTitle tag="h5">{wishlist.title}</CardTitle>
+                  <CardSubtitle className="mb-2 text-muted" tag="h6">
+                    Created: {wishlist.created}
+                  </CardSubtitle>
+                  <CardText>Description of wishlist</CardText>
+                  <Button color="info">Edit Title</Button>
+                  {/* set active wishlist and navigate  */}
+                  <Button color="primary">Edit Items</Button>
+                  <Button color="danger">Delete</Button>
+                </CardBody>
+              </Card>
+            );
+          })}
         </CardGroup>
         {/* //next page when wishlist is selected/clicked. Displays list of items of specific wishlist */}
-        <WishlistViewer activeWishlist={this.state.activeWishlist} />
+        {/* <WishlistViewer activeWishlist={this.state.activeWishlist} /> */}
       </div>
-    ));
+    );
   }
 }
 
