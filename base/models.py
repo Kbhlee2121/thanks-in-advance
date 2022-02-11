@@ -35,6 +35,7 @@ class WishList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=50)
     created = models.DateTimeField(default=datetime.now)
+    description = models.TextField(null=True, blank=True)
     # items = models.ForeignKey(Item, on_delete=models.PROTECT, related_name='wishlist_items')
     
     def __str__(self):

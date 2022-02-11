@@ -9,15 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       modal: false,
-      activeItem: {
-        // // setting defaults to fields
-        // id: null,
-        // item_name: null,
-        // item_description: null,
-        // claimed: false,
-        // item_link: null,
-        // item_image: null,
-      },
+      activeItem: {},
       wishList: [],
       filteredWishList: [],
       // // editing lets us know if we're editing or submitting an item
@@ -63,19 +55,6 @@ class App extends Component {
       this.setState({ activeItem: updatedItem });
     }
   };
-
-  // onImageChange = (event) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     const image = event.target.files[0];
-  //     const activeItem = {
-  //       ...this.state.activeItem,
-  //       item_image: URL.createObjectURL(image),
-  //     };
-  //     this.setState({
-  //       activeItem,
-  //     });
-  //   }
-  // };
 
   // create toggle property
   toggle = () => {
