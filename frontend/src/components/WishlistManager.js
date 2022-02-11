@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import WishlistViewer from "./WishlistViewer";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   CardGroup,
@@ -63,9 +63,15 @@ class WishlistManager extends Component {
       .catch((error) => console.log(error.response.data));
   };
 
-  //edit WL button
+  //edit WL Info button
 
   //Edit Items button: set activeWishlist on card click -> whole wishlist object
+  editItem = (wishlist) => {
+    this.setState({ activeWishlist: wishlist });
+    const navigate = useNavigate();
+    navigate("/wishlist", { state: { wishlist: wishlist } });
+  };
+
   //WishlistViewer?
   //delete WL button
 
@@ -87,9 +93,14 @@ class WishlistManager extends Component {
                     Created: {wishlist.created}
                   </CardSubtitle>
                   <CardText>Description of wishlist</CardText>
-                  <Button color="info">Edit Title</Button>
+                  <Button color="info">Edit Info</Button>
                   {/* set active wishlist and navigate  */}
-                  <Button color="primary">Edit Items</Button>
+                  <Button
+                    color="primary"
+                    onClick={() => this.editItems(wishlist)}
+                  >
+                    Edit Items
+                  </Button>
                   <Button color="danger">Delete</Button>
                 </CardBody>
               </Card>
