@@ -27,8 +27,8 @@ function WishlistViewer() {
   const [filteredList, setFilteredList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [modal, setModal] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [viewing, setViewing] = useState(false);
+  const [isEditing, setEditing] = useState(false);
+  const [isViewing, setViewing] = useState(false);
 
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
   // componentDidMount() {
@@ -85,92 +85,95 @@ function WishlistViewer() {
 
   const toggle = () => {
     // If the modal is open and we're toggling it off, we should reset the active item
-    if (this.state.modal) {
+    if (modal) {
       resetActiveItem();
     }
-    this.setState({ modal: !this.state.modal });
+    setModal(!modal);
   };
 
   const handleModalSubmit = () => {
     // Backend does not like _ in Urls or ones that are over 200 characters
     // This should catch most* Urls
-    if (
-      this.state.activeItem.item_link &&
-      this.state.activeItem.item_link.length > 200
-    ) {
-      let shortLink = this.state.activeItem.item_link
+    if (activeItem.item_link && activeItem.item_link.length > 200) {
+      let shortLink = activeItem.item_link
         .split("?")[0] // most things after ? is optional
         .slice(0, 200) // ensure max length
         .replace(/_/g, ""); // remove all underscores
       console.log(`Link too long, new link is: ${shortLink}`, shortLink.length);
-      this.setState({
-        activeItem: {
-          item_link: shortLink,
-        },
-      });
+      const updatedLinkItem = { ...activeItem, item_link: shortLink };
+      setActiveItem(updatedLinkItem);
     }
 
-    this.state.editing ? this.updateItem() : this.addItem();
+    isEditing ? updateItem() : addItem();
   };
 
   const detailViewItem = (item) => {
-    const foundItem = this.state.itemsList.find(
-      (listItem) => item.id === listItem.id
-    );
+    const foundItem = itemsList.find((listItem) => item.id === listItem.id);
     if (foundItem) {
-      this.setState({ activeItem: foundItem, viewing: true });
-      this.toggle();
+      setActiveItem(foundItem);
+      setViewing(true);
+      // this.setState({ activeItem: foundItem, viewing: true });
+      toggle();
     }
   };
 
   const setAddItemState = () => {
-    this.setState({
-      editing: false,
-      viewing: false,
-    });
-    // this.resetActiveItem();
-    this.toggle();
+    setEditing(false);
+    setViewing(false);
+    // this.setState({
+    //   editing: false,
+    //   viewing: false,
+    // });
+    toggle();
   };
 
   const addItem = () => {
-    let item = this.state.activeItem;
-    item.wishlist_id = this.state.activeWishlist;
+    let item = activeItem;
+    //?? wishlist or wishlist_id
+    setActiveWishlist(item.wishlist_id);
+    // item.wishlist_id = this.state.activeWishlist;
     axios
       .post("http://localhost:8000/api/item-create/", item)
       .then((response) => {
         //concat adds item to end of list
-        this.setState({ itemsList: this.state.itemsList.concat(item) });
-        this.renderItems();
-        this.toggle();
-        // this.resetActiveItem();
+        const newItemsList = itemsList.concat(item);
+        setItemsList(newItemsList);
+        // this.setState({ itemsList: this.state.itemsList.concat(item) });
+        renderItems();
+        toggle();
       })
       .catch((error) => console.log(error));
   };
 
   const setEditItemState = (item) => {
-    this.setState({
-      editing: true,
-      viewing: false,
-      activeItem: item,
-    });
-    this.toggle();
+    setEditing(true);
+    setViewing(false);
+    setActiveItem(item);
+    // this.setState({
+    //   editing: true,
+    //   viewing: false,
+    //   activeItem: item,
+    // });
+    toggle();
   };
 
   const updateItem = () => {
-    const item = this.state.activeItem;
-    const foundIndex = this.state.itemsList.findIndex(
+    const item = activeItem;
+    const foundIndex = itemsList.findIndex(
       (listItem) => listItem.id === item.id
     );
     if (foundIndex !== -1) {
       axios
         .put(`http://localhost:8000/api/item-update/${item.id}/`, item)
         .then((response) => {
-          const listCopy = [...this.state.itemsList];
+          const listCopy = [...itemsList];
           listCopy[foundIndex] = item;
           // this.resetActiveItem();
-          this.setState({ editing: false, itemsList: listCopy });
-          this.toggle();
-          this.renderItems();
+          setEditing(false);
+          setItemsList(listCopy);
+          // this.setState({ editing: false, itemsList: listCopy });
+          toggle();
+          renderItems();
         })
         .catch((error) => console.log(error));
     } else {
@@ -179,18 +182,17 @@ function WishlistViewer() {
   };
 
   const deleteItem = (item) => {
-    const foundItem = this.state.itemsList.find(
-      (listItem) => item.id === listItem.id
-    );
+    const foundItem = itemsList.find((listItem) => item.id === listItem.id);
     if (foundItem) {
       axios
         .delete(`http://localhost:8000/api/item-delete/${item.id}/`)
         .then((response) => {
-          const filteredList = this.state.itemsList.filter(
+          const filteredList = itemsList.filter(
             (listItem) => listItem.id !== foundItem.id
           );
-          this.setState({ itemsList: filteredList });
-          this.renderItems();
+          setItemsList(filteredList);
+          // this.setState({ itemsList: filteredList });
+          renderItems();
         })
         .catch((error) => console.log(error));
     } else {
@@ -201,33 +203,35 @@ function WishlistViewer() {
   const searchWishList = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm.length > 0) {
-      const filtered = this.state.itemsList.filter((item) =>
+      const filtered = itemsList.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       if (filtered.length > 0) {
-        this.setState({ filteredList: filtered });
-        this.renderItems();
+        setFilteredList(filtered);
+        // this.setState({ filteredList: filtered });
+        renderItems();
       }
     } else {
-      this.setState({ filteredList: [] });
-      this.renderItems();
+      setFilteredList([]);
+      // this.setState({ filteredList: [] });
+      renderItems();
     }
   };
 
   // rendering items in the wishlist
   const renderItems = () => {
     let newItems = [];
-    if (this.state.filteredList.length > 0) {
-      newItems = this.state.filteredList;
+    if (filteredList.length > 0) {
+      newItems = filteredList;
     } else {
-      newItems = this.state.itemsList;
+      newItems = itemsList;
     }
     return newItems.map((item) => (
       <Item
         item={item}
-        detailViewItem={this.detailViewItem}
-        setEditItemState={this.setEditItemState}
-        deleteItem={this.deleteItem}
+        detailViewItem={detailViewItem}
+        setEditItemState={setEditItemState}
+        deleteItem={deleteItem}
       />
     ));
   };
@@ -242,7 +246,7 @@ function WishlistViewer() {
             type="text"
             name="search"
             placeholder="Search item..."
-            onChange={this.searchWishList}
+            onChange={searchWishList}
           />
         </form>
         <button className="btn btn-warning" onClick={setAddItemState}>
@@ -255,17 +259,14 @@ function WishlistViewer() {
 
       {this.state.modal ? (
         this.state.viewing ? (
-          <ViewItemModal
-            activeItem={this.state.activeItem}
-            toggle={this.toggle}
-          />
+          <ViewItemModal activeItem={activeItem} toggle={toggle} />
         ) : (
           <ItemModal
-            activeItem={this.state.activeItem}
-            handleFieldChange={this.handleModalFieldChange}
-            toggle={this.toggle}
-            onSave={this.handleModalSubmit}
-            isEditing={this.state.editing}
+            activeItem={activeItem}
+            handleFieldChange={handleModalFieldChange}
+            toggle={toggle}
+            onSave={handleModalSubmit}
+            isEditing={isEditing}
           />
         )
       ) : null}

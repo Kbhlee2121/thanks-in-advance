@@ -97,7 +97,7 @@ class WishlistManager extends Component {
                   {/* set active wishlist and navigate  */}
                   <Button
                     color="primary"
-                    onClick={() => this.editItems(wishlist)}
+                    onClick={() => this.editItem(wishlist)}
                   >
                     Edit Items
                   </Button>
