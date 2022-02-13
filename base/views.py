@@ -41,7 +41,14 @@ def apiOverview(request):
 
 # USER
 
-#view profile
+#Get all users
+@api_view(['GET'])
+def viewAllUsers(request):
+    users = User.objects.all().order_by('id')
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+#view one user
 # pk = user id when user system added
 # users currently allowed to have multiple profiles
 @api_view(['GET'])
@@ -49,9 +56,6 @@ def viewUser(request, pk):
     userprofile = User.objects.get(id=pk)
     serializer = UserSerializer(userprofile)
     return Response(serializer.data)
-
-#Get all users
-# @api_view(['GET'])
 
 # create user profile (need to ensure users only make 1)
 @api_view(['POST'])
@@ -75,6 +79,21 @@ def updateUserProfile(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # WISHLISTS
+
+# view all wishlists (by user not yet added)
+@api_view(['GET'])
+def viewAllWishlists(request):
+    wishlists = WishList.objects.all().order_by('id')
+    serializer = WishListSerializer(wishlists, many=True)
+    return Response(serializer.data)
+
+# view all wishlists of one user
+@api_view(['GET'])
+def userWishlists(request, pk):
+    wishlists = WishList.objects.filter(user=pk)
+    serializer = WishListSerializer(wishlists, many=True)
+    return Response(serializer.data)
+
 
 #creates new wishlist
 @api_view(['POST'])
@@ -111,12 +130,6 @@ def deleteWishlist(request, pk):
     wishlist.delete()
     return Response(status=status.HTTP_200_OK)
 
-# view all wishlists (by user not yet added)
-@api_view(['GET'])
-def viewAllWishlists(request):
-    wishlists = WishList.objects.all().order_by('id')
-    serializer = WishListSerializer(wishlists, many=True)
-    return Response(serializer.data)
 
 # ITEMS
 

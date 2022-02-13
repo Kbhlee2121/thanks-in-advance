@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
+    path('users/', views.viewAllUsers, name="view-users"),
     path('user-profile/<str:pk>/', views.viewUser, name="view-userprofile"),
     path('user-create/', views.createUserProfile, name="create-user"),
     path('user-update/<str:pk>/', views.updateUserProfile, name="update-user"),
@@ -14,6 +15,9 @@ urlpatterns = [
 
     # view all wishlists
     path('wishlists/', views.viewAllWishlists, name="view-all-wishlists"),
+
+    # view wishlists of user
+    path('user/wishlists/<str:pk>/', views.userWishlists, name="view-user-wishlists"),
 
     # ITEM PATHS
     #view all items of all wishlists
