@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserForm from "./components/UserForm";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/wishlist" element={<WishlistViewer />} />
+        <Route path="/userform" element={<UserForm />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

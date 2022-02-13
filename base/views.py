@@ -99,6 +99,7 @@ def userWishlists(request, pk):
 @api_view(['POST'])
 def createWishlist(request):
     serializer = WishListSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -162,8 +163,6 @@ def viewWishlistItems(request, list):
 @api_view(['POST'])
 def createItem(request):
     serializer = ItemSerializer(data=request.data)
-    print(request)
-    print(serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -195,6 +194,24 @@ def deleteItem(request, pk):
 
     item.delete()
     return Response(status=status.HTTP_200_OK)
+
+# LOGIN
+
+#checks if username and pswd in request exists in db
+@api_view(['POST'])
+def login(request):
+    user_name = request.data['username']
+    password = request.data['password']
+    try:
+        user = User.objects.get(username=user_name)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if user.password == password:
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 

@@ -1,5 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -14,16 +15,39 @@ import {
   CardLink,
 } from "reactstrap";
 
-const User = ({ user }) => {
-  const navigate = useNavigate();
-  const editProfile = () => {
-    navigate("/userform", { state: { user: user } });
+const UserForm = () => {
+  const location = useLocation();
+  const [userProfile, setUserProfile] = useState({});
+
+  const getUser = () => {
+    const currentUser = location.state.user;
+    setUserProfile(currentUser);
   };
+
+  useEffect(() => getUser(), []);
+
+  const handleFieldChange = (e) => {
+    let { name, value } = e.target;
+    const updatedUser = { ...userProfile, [name]: value };
+    setUserProfile(updatedUser);
+  };
+
+  const updateProfile = () => {
+    const user = userProfile;
+    axios
+      .put(`http://localhost:8000/api/user-update/${user.id}/`, user)
+      .then((response) => {
+        setUserProfile(response.data);
+      })
+      .catch((error) => console.log(error));
+    Navigate("/");
+  };
+
   return (
     <div>
       <Card>
         <CardBody>
-          <CardTitle tag="h5">User Profile</CardTitle>
+          <CardTitle tag="h5">Edit Profile</CardTitle>
           <Form>
             <FormGroup>
               <Label for="full_name">Full Name</Label>
@@ -31,8 +55,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="full_name"
                 id="full_name"
-                // onChange={addInputHandler}
-                value={user.full_name}
+                onChange={handleFieldChange}
+                value={userProfile.full_name}
               />
             </FormGroup>
             <FormGroup>
@@ -41,8 +65,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="pronouns"
                 id="pronouns"
-                // onChange={addInputHandler}
-                value={user.pronouns}
+                onChange={handleFieldChange}
+                value={userProfile.pronouns}
               />
             </FormGroup>
             <FormGroup>
@@ -51,8 +75,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="phonetics"
                 id="phonetics"
-                // onChange={addInputHandler}
-                value={user.phonetics}
+                onChange={handleFieldChange}
+                value={userProfile.phonetics}
               />
             </FormGroup>
             <FormGroup>
@@ -61,8 +85,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="fav_color"
                 id="fav_color"
-                // onChange={addInputHandler}
-                value={user.fav_color}
+                onChange={handleFieldChange}
+                value={userProfile.fav_color}
               />
             </FormGroup>
             <FormGroup>
@@ -71,8 +95,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="fav_color_to_wear"
                 id="fav_color_to_wear"
-                // onChange={addInputHandler}
-                value={user.fav_color_to_wear}
+                onChange={handleFieldChange}
+                value={userProfile.fav_color_to_wear}
               />
             </FormGroup>
             <FormGroup>
@@ -81,8 +105,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="fav_food_snack"
                 id="fav_food_snack"
-                // onChange={addInputHandler}
-                value={user.fav_food_snack}
+                onChange={handleFieldChange}
+                value={userProfile.fav_food_snack}
               />
             </FormGroup>
             <FormGroup>
@@ -91,8 +115,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="shoe_size"
                 id="shoe_size"
-                // onChange={addInputHandler}
-                value={user.shoe_size}
+                onChange={handleFieldChange}
+                value={userProfile.shoe_size}
               />
             </FormGroup>
             <FormGroup>
@@ -101,8 +125,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="clothes_top_size"
                 id="clothes_top_size"
-                // onChange={addInputHandler}
-                value={user.clothes_top_size}
+                onChange={handleFieldChange}
+                value={userProfile.clothes_top_size}
               />
             </FormGroup>
             <FormGroup>
@@ -111,8 +135,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="clothes_bottom_size"
                 id="clothes_bottom_size"
-                // onChange={addInputHandler}
-                value={user.clothes_bottom_size}
+                onChange={handleFieldChange}
+                value={userProfile.clothes_bottom_size}
               />
             </FormGroup>
             <FormGroup>
@@ -121,8 +145,8 @@ const User = ({ user }) => {
                 // type="text"
                 name="dont_want_list"
                 id="dont_want_list"
-                // onChange={addInputHandler}
-                value={user.dont_want_list}
+                onChange={handleFieldChange}
+                value={userProfile.dont_want_list}
               />
             </FormGroup>
             <FormGroup>
@@ -131,29 +155,30 @@ const User = ({ user }) => {
                 // type="text"
                 name="pinterest_link"
                 id="pinterest_link"
-                // onChange={addInputHandler}
-                value={user.pinterest_link}
+                onChange={handleFieldChange}
+                value={userProfile.pinterest_link}
               />
             </FormGroup>
             <FormGroup>
-              {/* <Label for="amazon_link">Amazon Shopping List Link</Label> */}
-              {/* <Input
+              <Label for="amazon_link">Amazon Shopping List Link</Label>
+              <Input
                 // type="text"
                 name="amazon_link"
                 id="amazon_link"
-                // onChange={addInputHandler}
-                value={user.amazon_link}
-              /> */}
-              <CardLink alt="Amazon Shopping List Link" href={user.amazon_link}>
+                onChange={handleFieldChange}
+                value={userProfile.amazon_link}
+              />
+
+              {/* <CardLink alt="Amazon Shopping List Link" href={user.amazon_link}>
                 Amazon Shopping List Link
-              </CardLink>
+              </CardLink> */}
             </FormGroup>
           </Form>
-          <Button onClick={editProfile}>Edit Profile</Button>
+          <Button onClick={updateProfile}>Save</Button>
         </CardBody>
       </Card>
     </div>
   );
 };
 
-export default User;
+export default UserForm;

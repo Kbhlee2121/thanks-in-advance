@@ -4,6 +4,7 @@ import ItemModal from "./ItemModal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import ItemsList from "./ItemList";
+import { Link } from "react-router-dom";
 
 //displays list of items of selected wishlist. Handles CRUD Modals of Items
 // class WishlistViewer extends Component {
@@ -262,7 +263,7 @@ function WishlistViewer() {
   return (
     <div>
       <header>
-        <h5>Home</h5>
+        <Link to="/">Home</Link>
         <h1>Thanks in Advance</h1>
         <h2 id="wl-head" className="text-center">
           {activeWishlist.title}
