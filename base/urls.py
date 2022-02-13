@@ -12,12 +12,12 @@ urlpatterns = [
     path('wishlist-create/', views.createWishlist, name="create-wishlist"),
     path('wishlist-update/<str:pk>/', views.updateWishlist, name="update-wishlist"),
     path('wishlist-delete/<str:pk>/', views.deleteWishlist, name="delete-wishlist"),
-
     # view all wishlists
     path('wishlists/', views.viewAllWishlists, name="view-all-wishlists"),
-
     # view wishlists of user
     path('user/wishlists/<str:pk>/', views.userWishlists, name="view-user-wishlists"),
+    # view all wishlists except of user (friends)
+    path('friend-wishlists/<str:pk>/', views.viewFriendWishlists, name="view-friend-wishlists"),
 
     # ITEM PATHS
     #view all items of all wishlists

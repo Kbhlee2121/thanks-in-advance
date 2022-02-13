@@ -46,6 +46,7 @@ function WishlistViewer() {
   const getItemsList = () => {
     const currentWishlist = location.state.wishlist;
     setActiveWishlist(currentWishlist);
+    console.log(currentWishlist);
     axios
       .get(`http://localhost:8000/api/items-wishlist/${currentWishlist.id}/`)
       .then((response) => {

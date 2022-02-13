@@ -38,6 +38,9 @@ class WishList(models.Model):
     description = models.TextField(null=True, blank=True)
     # items = models.ForeignKey(Item, on_delete=models.PROTECT, related_name='wishlist_items')
     
+    # class Meta:
+    #     ordering = ('-created',)
+
     def __str__(self):
         return self.title
 

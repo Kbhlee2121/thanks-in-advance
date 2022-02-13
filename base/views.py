@@ -94,6 +94,12 @@ def userWishlists(request, pk):
     serializer = WishListSerializer(wishlists, many=True)
     return Response(serializer.data)
 
+#view all wishlists (friends) except loggedin user
+@api_view(['GET'])
+def viewFriendWishlists(request, pk):
+    friendWishlists = WishList.objects.exclude(user=pk)
+    serializer = WishListSerializer(friendWishlists, many=True)
+    return Response(serializer.data)
 
 #creates new wishlist
 @api_view(['POST'])

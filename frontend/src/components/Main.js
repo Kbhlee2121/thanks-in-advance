@@ -11,6 +11,7 @@ const Main = (props) => {
         {/* Logout instead of home? */}
         <Link to="/">Home</Link>
         <h1>Thanks in Advance</h1>
+        <h2 className="text-center">My Dashboard</h2>
         <h3>
           Signed in as <b>{props.user.username}</b>
         </h3>

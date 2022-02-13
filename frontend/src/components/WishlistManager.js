@@ -11,6 +11,7 @@ import {
   Button,
 } from "reactstrap";
 import WishlistModal from "./WishlistModal";
+import FriendWishlist from "./FriendWishlist";
 
 //handles CRUD for wishlists. activeWishlist to be set by GET wishlist
 // class WishlistManager extends Component {
@@ -177,8 +178,9 @@ function WishlistManager(props) {
 
   let newWishlists = wishlists;
   return (
-    //cards for wishlists
+    //cards for user's wishlists
     <div>
+      <h3 className="text-center">My Wishlists</h3>
       <Button color="warning" onClick={setAddWishlistState}>
         Add Wishlist
       </Button>
@@ -223,6 +225,7 @@ function WishlistManager(props) {
           isEditing={isEditingWL}
         />
       ) : null}
+      <FriendWishlist userId={props.userId} />
 
       {/* //next page when wishlist is selected/clicked. Displays list of items of specific wishlist */}
       {/* <WishlistViewer activeWishlist={this.state.activeWishlist} /> */}
