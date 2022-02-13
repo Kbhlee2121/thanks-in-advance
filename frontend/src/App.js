@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 import Main from "./components/Main";
 
@@ -7,6 +7,10 @@ function App() {
   return (
     <div>
       <header>
+        {/* reactstrap breadcrumc? */}
+        <nav>
+          <h5>Home</h5>
+        </nav>
         <h1>Thanks in Advance</h1>
       </header>
       <Main />

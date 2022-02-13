@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import WishlistViewer from "./components/WishlistViewer";
+import Login from "./components/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -12,7 +13,8 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/wishlist" exact element={<WishlistViewer />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/wishlist" element={<WishlistViewer />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

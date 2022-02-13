@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Item from "./Item";
 import ViewItemModal from "./ViewItemModal";
 import ItemModal from "./ItemModal";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import ItemsList from "./ItemList";
 
 //displays list of items of selected wishlist. Handles CRUD Modals of Items
 // class WishlistViewer extends Component {
@@ -70,13 +70,13 @@ function WishlistViewer() {
   const resetActiveItem = () => {
     const emptyItem = {
       // setting defaults to fields
-      id: null,
+      id: undefined,
       item_name: "",
       item_description: "",
       claimed: false,
-      item_link: null,
-      item_image: null,
-      wishlist: null,
+      item_link: undefined,
+      item_image: undefined,
+      wishlist: undefined,
     };
     setActiveItem(emptyItem);
   };
@@ -154,12 +154,12 @@ function WishlistViewer() {
         // const newItemsList = itemsList.concat(item);
 
         const newItem = response.data;
-        const newItemsList = { ...itemsList, newItem };
+        const newItemsList = itemsList.concat(newItem);
         console.log(newItemsList, setItemsList);
         setItemsList(newItemsList);
 
         // // this.setState({ itemsList: this.state.itemsList.concat(item) });
-        renderItems();
+        // renderItems();
         toggle();
       })
       .catch((error) => console.log(error));
@@ -193,7 +193,7 @@ function WishlistViewer() {
           setItemsList(listCopy);
           // this.setState({ editing: false, itemsList: listCopy });
           toggle();
-          renderItems();
+          // renderItems();
         })
         .catch((error) => console.log(error));
     } else {
@@ -212,7 +212,7 @@ function WishlistViewer() {
           );
           setItemsList(filteredList);
           // this.setState({ itemsList: filteredList });
-          renderItems();
+          // renderItems();
         })
         .catch((error) => console.log(error));
     } else {
@@ -229,38 +229,45 @@ function WishlistViewer() {
       if (filtered.length > 0) {
         setFilteredList(filtered);
         // this.setState({ filteredList: filtered });
-        renderItems();
+        // renderItems();
       }
     } else {
       setFilteredList([]);
       // this.setState({ filteredList: [] });
-      renderItems();
+      // renderItems();
     }
   };
 
   // rendering items in the wishlist
-  const renderItems = () => {
-    console.log("Calling renderItems");
-    let newItems = [];
-    if (filteredList.length > 0) {
-      newItems = filteredList;
-    } else {
-      newItems = itemsList;
-    }
-    console.log(newItems);
-    return newItems.map((item) => (
-      <Item
-        key={item.id}
-        item={item}
-        detailViewItem={detailViewItem}
-        setEditItemState={setEditItemState}
-        deleteItem={deleteItem}
-      />
-    ));
-  };
+  // const renderItems = () => {
+  //   console.log("Calling renderItems");
+  //   let newItems = [];
+  //   if (filteredList.length > 0) {
+  //     newItems = filteredList;
+  //   } else {
+  //     newItems = itemsList;
+  //   }
+  //   console.log(newItems);
+  //   // return newItems.map((item) => (
+  //   //   <Item
+  //   //     key={item.id}
+  //   //     item={item}
+  //   //     detailViewItem={detailViewItem}
+  //   //     setEditItemState={setEditItemState}
+  //   //     deleteItem={deleteItem}
+  //   //   />
+  //   // ));
+  // };
 
   return (
     <div>
+      <header>
+        <h5>Home</h5>
+        <h1>Thanks in Advance</h1>
+        <h2 id="wl-head" className="text-center">
+          {activeWishlist.title}
+        </h2>
+      </header>
       <div className="item-container">
         <form id="form">
           <input
@@ -278,11 +285,18 @@ function WishlistViewer() {
       </div>
       <div id="list-wrapper">
         <ul className="list-group list-group-flush">
-          {" "}
+          <ItemsList
+            itemsList={itemsList}
+            filteredList={filteredList}
+            detailViewItem={detailViewItem}
+            setEditItemState={setEditItemState}
+            deleteItem={deleteItem}
+          />
+
           {/* {itemsList ? itemsList.map((item) => <p>{item.item_name}</p>) : null} */}
-          {itemsList.length > 0
+          {/* {itemsList.length > 0
             ? renderItems()
-            : `No Items: ${itemsList.length}`}
+            : `No Items: ${itemsList.length}`} */}
         </ul>
       </div>
 

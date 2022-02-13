@@ -4,8 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
     path('user-profile/<str:pk>/', views.viewUser, name="view-userprofile"),
-    path('profile-create/', views.createUserProfile, name="create-profile"),
-    path('profile-update/<str:pk>/', views.updateUserProfile, name="update-profile"),
+    path('user-create/', views.createUserProfile, name="create-user"),
+    path('user-update/<str:pk>/', views.updateUserProfile, name="update-user"),
 
     # WISHLIST PATHS
     path('wishlist-create/', views.createWishlist, name="create-wishlist"),
