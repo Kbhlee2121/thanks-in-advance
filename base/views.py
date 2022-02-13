@@ -39,7 +39,7 @@ def apiOverview(request):
 
     return Response(api_urls)
 
-# USERPROFILE
+# USER
 
 #view profile
 # pk = user id when user system added
@@ -49,6 +49,9 @@ def viewUser(request, pk):
     userprofile = User.objects.get(id=pk)
     serializer = UserSerializer(userprofile)
     return Response(serializer.data)
+
+#Get all users
+# @api_view(['GET'])
 
 # create user profile (need to ensure users only make 1)
 @api_view(['POST'])
