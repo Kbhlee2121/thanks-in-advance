@@ -42,7 +42,7 @@ class WishList(models.Model):
         return self.title
 
 class Item(models.Model):
-    wishlist = models.ManyToManyField(WishList, related_name='items_list', blank=True)
+    wishlist = models.ForeignKey(WishList, on_delete=models.CASCADE, related_name='items_list', blank=True)
     item_name = models.CharField(max_length=50)
     claimed = models.BooleanField(default=False)
     item_link = models.URLField(null=True, blank=True)

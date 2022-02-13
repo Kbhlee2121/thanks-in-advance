@@ -22,8 +22,8 @@ import { useLocation } from "react-router-dom";
 //   }
 function WishlistViewer() {
   const location = useLocation();
-  const [acitveWishlist, setActiveWishlist] = useState(null);
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeWishlist, setActiveWishlist] = useState({});
+  const [activeItem, setActiveItem] = useState({});
   const [filteredList, setFilteredList] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [modal, setModal] = useState(false);
@@ -39,19 +39,33 @@ function WishlistViewer() {
   // };
 
   // list of items of selected wishlist
+
+  // useEffect(setActiveWishlist(location.state.wishlist), []);
+
   const getItemsList = () => {
+    const currentWishlist = location.state.wishlist;
+    setActiveWishlist(currentWishlist);
     axios
-      .get(
-        `http://localhost:8000/api/items-wishlist/${this.state.activeWishlist.id}`
-      )
+      .get(`http://localhost:8000/api/items-wishlist/${currentWishlist.id}/`)
       .then((response) => {
+        console.log("in getItemsList");
         const itemsList = response.data;
+        console.log(itemsList);
         setItemsList(itemsList);
       })
       .catch((error) => console.log(error));
   };
+  // const currentWishlist = () => {
+  //   const currentWishlist = location.state.wishlist;
+  //   setActiveWishlist(currentWishlist);
+  //   console.log(currentWishlist, activeWishlist);
+  //   getItemsList();
+  // };
 
-  useEffect(getItemsList, []);
+  useEffect(() => {
+    console.log("updating!");
+    getItemsList();
+  }, []);
 
   const resetActiveItem = () => {
     const emptyItem = {
@@ -85,6 +99,7 @@ function WishlistViewer() {
 
   const toggle = () => {
     // If the modal is open and we're toggling it off, we should reset the active item
+    // renderItems();
     if (modal) {
       resetActiveItem();
     }
@@ -129,16 +144,21 @@ function WishlistViewer() {
 
   const addItem = () => {
     let item = activeItem;
-    //?? wishlist or wishlist_id
-    setActiveWishlist(item.wishlist_id);
-    // item.wishlist_id = this.state.activeWishlist;
+    // //?? wishlist or wishlist_id
+    // setActiveWishlist(item.wishlist_id);
+    item.wishlist = activeWishlist.id;
     axios
       .post("http://localhost:8000/api/item-create/", item)
       .then((response) => {
         //concat adds item to end of list
-        const newItemsList = itemsList.concat(item);
+        // const newItemsList = itemsList.concat(item);
+
+        const newItem = response.data;
+        const newItemsList = { ...itemsList, newItem };
+        console.log(newItemsList, setItemsList);
         setItemsList(newItemsList);
-        // this.setState({ itemsList: this.state.itemsList.concat(item) });
+
+        // // this.setState({ itemsList: this.state.itemsList.concat(item) });
         renderItems();
         toggle();
       })
@@ -220,14 +240,17 @@ function WishlistViewer() {
 
   // rendering items in the wishlist
   const renderItems = () => {
+    console.log("Calling renderItems");
     let newItems = [];
     if (filteredList.length > 0) {
       newItems = filteredList;
     } else {
       newItems = itemsList;
     }
+    console.log(newItems);
     return newItems.map((item) => (
       <Item
+        key={item.id}
         item={item}
         detailViewItem={detailViewItem}
         setEditItemState={setEditItemState}
@@ -254,11 +277,17 @@ function WishlistViewer() {
         </button>
       </div>
       <div id="list-wrapper">
-        <ul className="list-group list-group-flush">{renderItems}</ul>
+        <ul className="list-group list-group-flush">
+          {" "}
+          {/* {itemsList ? itemsList.map((item) => <p>{item.item_name}</p>) : null} */}
+          {itemsList.length > 0
+            ? renderItems()
+            : `No Items: ${itemsList.length}`}
+        </ul>
       </div>
 
-      {this.state.modal ? (
-        this.state.viewing ? (
+      {modal ? (
+        isViewing ? (
           <ViewItemModal activeItem={activeItem} toggle={toggle} />
         ) : (
           <ItemModal

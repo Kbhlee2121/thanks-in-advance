@@ -1,7 +1,7 @@
 import React from "react";
 
 const Item = (props) => {
-  const { item, detailViewItem, setEditItemState, deleteItem } = this.props;
+  const { item, detailViewItem, setEditItemState, deleteItem } = props;
   return (
     <li
       key={item.id}

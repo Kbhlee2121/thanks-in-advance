@@ -9,6 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class WishListSerializer(serializers.ModelSerializer):
+    # items_list = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     items_list = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = WishList
@@ -16,7 +17,7 @@ class WishListSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     # queryset=WishList.objects.all()
-    wishlists = WishListSerializer(many=True, read_only=True)
+    # wishlist = WishListSerializer(read_only=True)
     class Meta:
         model = Item
-        fields = ('id','item_name','claimed','item_link','item_description','item_image','wishlists')
+        fields = ('id','item_name','claimed','item_link','item_description','item_image','wishlist')

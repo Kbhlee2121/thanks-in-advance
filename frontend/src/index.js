@@ -12,7 +12,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="wishlist" element={<WishlistViewer />} />
+        <Route path="/wishlist" exact element={<WishlistViewer />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

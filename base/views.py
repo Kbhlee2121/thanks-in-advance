@@ -146,6 +146,8 @@ def viewWishlistItems(request, list):
 @api_view(['POST'])
 def createItem(request):
     serializer = ItemSerializer(data=request.data)
+    print(request)
+    print(serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
