@@ -8,6 +8,7 @@ const ItemsList = (props) => {
     detailViewItem,
     setEditItemState,
     deleteItem,
+    isFriendViewing,
   } = props;
   let active = [];
   filteredList.length > 0 ? (active = filteredList) : (active = itemsList);
@@ -39,6 +40,7 @@ const ItemsList = (props) => {
         detailViewItem={detailViewItem}
         setEditItemState={setEditItemState}
         deleteItem={deleteItem}
+        isFriendViewing={isFriendViewing}
       />
     )) || "Loading..."
   );

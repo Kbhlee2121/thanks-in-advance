@@ -50,7 +50,7 @@ class ViewItemModal extends Component {
                 src={activeItem.item_image}
               />
 
-              <CardTitle tag="h5">Claimed Status</CardTitle>
+              <CardTitle tag="h5">Status</CardTitle>
               <CardText>
                 {activeItem.claimed ? "Item Claimed" : "Item Not Claimed"}
               </CardText>

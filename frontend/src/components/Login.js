@@ -38,7 +38,7 @@ const Login = (props) => {
         //backend sends back response (user) and sets the user state for App
         // const newUser = response.data;
         props.setUser(response.data);
-        localStorage.setItem("loggedUser", response.data);
+        localStorage.setItem("loggedUser", JSON.stringify(response.data));
       })
       .catch((error) => console.log(error));
   };

@@ -30,7 +30,9 @@ const FriendWishlist = (props) => {
   const viewWishlistHandler = (wishlist) => {
     setActiveFriend(wishlist);
     console.log(wishlist, activeFriend);
-    navigate("/wishlist", { state: { wishlist: wishlist } });
+    navigate("/wishlist", {
+      state: { wishlist: wishlist, friendViewing: true },
+    });
   };
 
   useEffect(getFriendWishlists, []);

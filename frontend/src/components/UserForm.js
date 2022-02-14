@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -17,6 +17,7 @@ import {
 
 const UserForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState({});
 
   const getUser = () => {
@@ -40,7 +41,7 @@ const UserForm = () => {
         setUserProfile(response.data);
       })
       .catch((error) => console.log(error));
-    Navigate("/");
+    navigate("/");
   };
 
   return (

@@ -1,7 +1,13 @@
 import React from "react";
 
 const Item = (props) => {
-  const { item, detailViewItem, setEditItemState, deleteItem } = props;
+  const {
+    item,
+    detailViewItem,
+    setEditItemState,
+    deleteItem,
+    isFriendViewing,
+  } = props;
   return (
     <li
       key={item.id}
@@ -17,12 +23,14 @@ const Item = (props) => {
         <button
           className="btn btn-info mr-2 btn-sm"
           onClick={(e) => setEditItemState(item)}
+          disabled={isFriendViewing}
         >
           Edit
         </button>
         <button
           className="btn btn-danger mr-2 btn-sm"
           onClick={(e) => deleteItem(item)}
+          disabled={isFriendViewing}
         >
           Delete
         </button>

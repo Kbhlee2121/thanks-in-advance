@@ -7,6 +7,28 @@ import ItemsList from "./ItemList";
 import { Link } from "react-router-dom";
 
 const FriendWishlistViewer = () => {
+  const location = useLocation();
+
+  const getItemsList = () => {
+    const currentWishlist = location.state.wishlist;
+    setActiveWishlist(currentWishlist);
+    console.log(currentWishlist);
+    axios
+      .get(`http://localhost:8000/api/items-wishlist/${currentWishlist.id}/`)
+      .then((response) => {
+        console.log("in getItemsList");
+        const itemsList = response.data;
+        console.log(itemsList);
+        setItemsList(itemsList);
+      })
+      .catch((error) => console.log(error));
+  };
+  
+  useEffect(() => {
+    console.log("updating!");
+    getItemsList();
+  }, []);
+
   return (
 
   )
