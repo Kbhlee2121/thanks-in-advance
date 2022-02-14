@@ -30,6 +30,8 @@ function WishlistViewer() {
   const [modal, setModal] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const [isViewing, setViewing] = useState(false);
+  const isFriendViewing = location.state.friendViewing;
+  // const [isFriendViewing, setFriendViewing] = useState(false);
 
   //componentDidMount - invoked after component is mounted(inserted into tree) to initiate network request if need to load data from a remote endpoint
   // componentDidMount() {
@@ -45,8 +47,8 @@ function WishlistViewer() {
 
   const getItemsList = () => {
     const currentWishlist = location.state.wishlist;
+    console.log(isFriendViewing);
     setActiveWishlist(currentWishlist);
-    console.log(currentWishlist);
     axios
       .get(`http://localhost:8000/api/items-wishlist/${currentWishlist.id}/`)
       .then((response) => {
@@ -265,6 +267,7 @@ function WishlistViewer() {
     <div>
       <header>
         <Link to="/">Home</Link>
+
         <h1>Thanks in Advance</h1>
         <h2 id="wl-head" className="text-center">
           {activeWishlist.title}
@@ -293,6 +296,7 @@ function WishlistViewer() {
             detailViewItem={detailViewItem}
             setEditItemState={setEditItemState}
             deleteItem={deleteItem}
+            isFriendViewing={isFriendViewing}
           />
 
           {/* {itemsList ? itemsList.map((item) => <p>{item.item_name}</p>) : null} */}
