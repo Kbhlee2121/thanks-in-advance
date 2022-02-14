@@ -31,7 +31,6 @@ const Login = (props) => {
   };
 
   const loginButtonHandler = (e) => {
-    console.log(loginInfo);
     axios
       .post("http://localhost:8000/api/login/", loginInfo)
       .then((response) => {
@@ -85,18 +84,17 @@ const Login = (props) => {
                   onChange={inputHandler}
                 />
               </FormGroup>
-              <Button color="primary" outline onClick={loginButtonHandler}>
+              <Button
+                color="primary"
+                outline={true}
+                onClick={loginButtonHandler}
+              >
                 Login
               </Button>
               <p>
-                Don't have an account?{" "}
-                <CardLink color="success" outline>
-                  Register here
-                </CardLink>
+                Don't have an account?
+                <CardLink outline={true}> Register here</CardLink>
               </p>
-              {/* <Button color="success" outline>
-                Register
-              </Button> */}
             </Form>
           </Card>
         </Col>

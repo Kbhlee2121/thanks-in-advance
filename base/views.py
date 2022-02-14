@@ -71,11 +71,15 @@ def updateUserProfile(request, pk):
         userprofile = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
+    print("updating profile")
+    print(userprofile)
+    print(request.data)
     serializer = UserSerializer(userprofile, data=request.data)
     if serializer.is_valid():
+        print("updated")
+        print(serializer)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # WISHLISTS
@@ -213,6 +217,7 @@ def login(request):
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
+    print(user)
     if user.password == password:
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

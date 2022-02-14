@@ -22,6 +22,7 @@ const UserForm = () => {
 
   const getUser = () => {
     const currentUser = location.state.user;
+    console.log(currentUser);
     setUserProfile(currentUser);
   };
 
@@ -38,10 +39,14 @@ const UserForm = () => {
     axios
       .put(`http://localhost:8000/api/user-update/${user.id}/`, user)
       .then((response) => {
-        setUserProfile(response.data);
+        const updatedUser = response.data;
+        setUserProfile(updatedUser);
+        localStorage.setItem("loggedUser", JSON.stringify(updatedUser));
+        console.log("finished updating localstorage");
       })
+      //runs after all other tasks
+      .finally(() => navigate("/"))
       .catch((error) => console.log(error));
-    navigate("/");
   };
 
   return (

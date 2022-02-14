@@ -22,7 +22,7 @@ const Main = (props) => {
       </header>
       <details>
         <summary>
-          <span class="h3">See User Profile</span>
+          <span className="h3">See User Profile</span>
         </summary>
         <User user={props.user} />
       </details>

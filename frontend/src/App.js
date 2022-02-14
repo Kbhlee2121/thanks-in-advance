@@ -10,13 +10,20 @@ function App() {
   //user is an object
   const [user, setUser] = useState(null);
   const checkUser = () => {
-    const savedUser = localStorage.getItem("loggedUser");
-    if (savedUser !== null) {
-      setUser(JSON.parse(savedUser));
+    console.log("checking user..");
+    if (user === null) {
+      // Get the last user data from localStorage
+      const savedUser = localStorage.getItem("loggedUser");
+      if (savedUser !== null) {
+        // If it is null, we're doing a fresh login
+        setUser(JSON.parse(savedUser));
+      }
     }
   };
 
-  useEffect(() => checkUser(), []);
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("loggedUser");

@@ -24,6 +24,7 @@ const User = ({ user }) => {
       <Card>
         <CardBody>
           <CardTitle tag="h5">User Profile</CardTitle>
+          <Button onClick={editProfile}>Edit Profile</Button>
           <Form>
             <FormGroup>
               <Label for="full_name">Full Name</Label>
@@ -33,6 +34,7 @@ const User = ({ user }) => {
                 id="full_name"
                 // onChange={addInputHandler}
                 value={user.full_name}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -43,6 +45,7 @@ const User = ({ user }) => {
                 id="pronouns"
                 // onChange={addInputHandler}
                 value={user.pronouns}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -53,6 +56,7 @@ const User = ({ user }) => {
                 id="phonetics"
                 // onChange={addInputHandler}
                 value={user.phonetics}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -63,6 +67,7 @@ const User = ({ user }) => {
                 id="fav_color"
                 // onChange={addInputHandler}
                 value={user.fav_color}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -73,6 +78,7 @@ const User = ({ user }) => {
                 id="fav_color_to_wear"
                 // onChange={addInputHandler}
                 value={user.fav_color_to_wear}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -83,6 +89,7 @@ const User = ({ user }) => {
                 id="fav_food_snack"
                 // onChange={addInputHandler}
                 value={user.fav_food_snack}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -93,6 +100,7 @@ const User = ({ user }) => {
                 id="shoe_size"
                 // onChange={addInputHandler}
                 value={user.shoe_size}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -103,6 +111,7 @@ const User = ({ user }) => {
                 id="clothes_top_size"
                 // onChange={addInputHandler}
                 value={user.clothes_top_size}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -113,6 +122,7 @@ const User = ({ user }) => {
                 id="clothes_bottom_size"
                 // onChange={addInputHandler}
                 value={user.clothes_bottom_size}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -123,6 +133,7 @@ const User = ({ user }) => {
                 id="dont_want_list"
                 // onChange={addInputHandler}
                 value={user.dont_want_list}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -133,6 +144,7 @@ const User = ({ user }) => {
                 id="pinterest_link"
                 // onChange={addInputHandler}
                 value={user.pinterest_link}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
@@ -149,7 +161,6 @@ const User = ({ user }) => {
               </CardLink>
             </FormGroup>
           </Form>
-          <Button onClick={editProfile}>Edit Profile</Button>
         </CardBody>
       </Card>
     </div>
