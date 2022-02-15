@@ -265,15 +265,34 @@ function WishlistViewer() {
 
   return (
     <div>
-      <header>
-        <Link to="/">Home</Link>
-
-        <h1>Thanks in Advance</h1>
-        <h2 id="wl-head" className="text-center">
-          {activeWishlist.title}
-        </h2>
+      <header className="d-flex container-fluid align-items-center justify-content-between">
+        <Link to="/" className="custom-link">
+          Home
+        </Link>
+        <h4>
+          {" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="25"
+            fill="currentColor"
+            class="bi bi-bag-heart"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5Zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0ZM14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"
+            />
+          </svg>
+          Thanks in Advance
+        </h4>
       </header>
-      <div className="item-container shadow p-3 mb-5 bg-white rounded">
+
+      <h2 id="wl-head" className="shadow p-3 my-4 bg-white rounded text-center">
+        {activeWishlist.title}
+      </h2>
+
+      <div className="item-container  shadow p-3 mb-5 bg-white rounded">
         <form id="form">
           <input
             className="form-control mt-1"
@@ -285,7 +304,7 @@ function WishlistViewer() {
           />
         </form>
         <button className="btn btn-warning my-3" onClick={setAddItemState}>
-          Add Item
+          + Item
         </button>
 
         <ul className="list-group list-group-flush">

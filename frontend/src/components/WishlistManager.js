@@ -180,76 +180,84 @@ function WishlistManager(props) {
   return (
     //cards for user's wishlists
     <div>
-      <h3 className="text-center">My Wishlists</h3>
-      <Button
-        color="warning bg-opacity-25"
-        className="mx-3 my-1"
-        onClick={setAddWishlistState}
-      >
-        Add Wishlist
-      </Button>
-      <div className="container-fluid">
-        <CardGroup className="row">
-          {newWishlists.map((wishlist) => {
-            const date = new Date(wishlist.created);
-            return (
-              <Card
-                key={wishlist.id}
-                className="shadow p-3 mb-5 bg-white rounded mx-2 my-2 col"
-              >
-                <CardBody>
-                  <CardTitle tag="h5">{wishlist.title}</CardTitle>
-                  <CardSubtitle className="mb-2 text-muted" tag="h6">
-                    {`Created: ${
-                      date.getMonth() + 1
-                    }/${date.getDate()}/${date.getFullYear()}`}
-                  </CardSubtitle>
-                  <CardText>{wishlist.description}</CardText>
-                </CardBody>
-                <div className="row">
-                  <Button
-                    color="info"
-                    className="col mx-1"
-                    onClick={(e) => setEditWishlistState(wishlist)}
-                  >
-                    Edit Info
-                  </Button>
-                  {/* set active wishlist and navigate  */}
-                  <Button
-                    color="primary"
-                    className="col mx-1"
-                    onClick={() => editItem(wishlist)}
-                  >
-                    Edit Items
-                  </Button>
-                  <Button
-                    color="danger"
-                    className="col mx-1"
-                    onClick={(e) => deleteWishlist(wishlist)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </CardGroup>
+      <div className="">
+        <h3 className="shadow p-2 mb-3 bg-white rounded text-center">
+          My Wishlists
+        </h3>
+        <div className="d-flex justify-content-center">
+          <Button
+            color="warning bg-opacity-25"
+            className="mx-3 my-1"
+            onClick={setAddWishlistState}
+          >
+            + Wishlist
+          </Button>
+        </div>
+
+        <div className="">
+          <CardGroup className="">
+            {newWishlists.map((wishlist) => {
+              const date = new Date(wishlist.created);
+              return (
+                <Card
+                  key={wishlist.id}
+                  className="shadow p-3 mb-5 bg-white rounded mx-2 my-2 col card-min-sizing"
+                >
+                  <CardBody>
+                    <CardTitle tag="h5">{wishlist.title}</CardTitle>
+                    <CardSubtitle className="mb-2 text-muted" tag="h6">
+                      {`Created: ${
+                        date.getMonth() + 1
+                      }/${date.getDate()}/${date.getFullYear()}`}
+                    </CardSubtitle>
+                    <CardText>{wishlist.description}</CardText>
+                  </CardBody>
+                  <div className="d-flex flex-row justify-content-around">
+                    <CardText
+                      // color="info"
+                      className="custom-link" // className="col mx-1"
+                      onClick={(e) => setEditWishlistState(wishlist)}
+                    >
+                      Edit Info
+                    </CardText>
+                    {/* set active wishlist and navigate  */}
+                    <CardText
+                      // color="primary"
+                      className="custom-link" // className="col mx-1"
+                      onClick={() => editItem(wishlist)}
+                    >
+                      Edit Items
+                    </CardText>
+                    <CardText
+                      // color="danger"
+                      className="custom-link" // className="col mx-1"
+                      onClick={(e) => deleteWishlist(wishlist)}
+                    >
+                      Delete
+                    </CardText>
+                  </div>
+                </Card>
+              );
+            })}
+          </CardGroup>
+        </div>
       </div>
+      <div>
+        {modalWL ? (
+          <WishlistModal
+            toggle={toggleWL}
+            open={modalWL}
+            addInputHandler={addInputHandler}
+            activeWishlist={activeWishlist}
+            onSave={handleSubmit}
+            isEditing={isEditingWL}
+          />
+        ) : null}
+        <FriendWishlist userId={props.userId} />
 
-      {modalWL ? (
-        <WishlistModal
-          toggle={toggleWL}
-          open={modalWL}
-          addInputHandler={addInputHandler}
-          activeWishlist={activeWishlist}
-          onSave={handleSubmit}
-          isEditing={isEditingWL}
-        />
-      ) : null}
-      <FriendWishlist userId={props.userId} />
-
-      {/* //next page when wishlist is selected/clicked. Displays list of items of specific wishlist */}
-      {/* <WishlistViewer activeWishlist={this.state.activeWishlist} /> */}
+        {/* //next page when wishlist is selected/clicked. Displays list of items of specific wishlist */}
+        {/* <WishlistViewer activeWishlist={this.state.activeWishlist} /> */}
+      </div>
     </div>
   );
 }

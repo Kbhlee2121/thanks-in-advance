@@ -29,12 +29,31 @@ class ViewItemModal extends Component {
         <ModalBody>
           <Card>
             <CardBody>
-              <CardTitle tag="h5">Item Name</CardTitle>
+              <CardTitle className="text-decoration-underline" tag="h5">
+                Item Name
+              </CardTitle>
               <CardSubtitle>{activeItem.item_name}</CardSubtitle>
 
-              <CardTitle tag="h5">Description</CardTitle>
+              <CardTitle className="text-decoration-underline" tag="h5">
+                Description
+              </CardTitle>
               <CardSubtitle>{activeItem.item_description}</CardSubtitle>
 
+              <CardTitle className="text-decoration-underline" tag="h5">
+                Image
+              </CardTitle>
+              <CardImg
+                className="mb-1"
+                alt={`Image of ${activeItem.item_name}`}
+                src={activeItem.item_image}
+              />
+
+              <CardTitle className="text-decoration-underline" tag="h5">
+                Status
+              </CardTitle>
+              <CardText>
+                {activeItem.claimed ? "Item Claimed" : "Item Not Claimed"}
+              </CardText>
               <CardTitle tag="h6">
                 <CardLink
                   alt={activeItem.item_name}
@@ -43,17 +62,6 @@ class ViewItemModal extends Component {
                   Item Link
                 </CardLink>
               </CardTitle>
-
-              <CardTitle tag="h5">Image</CardTitle>
-              <CardImg
-                alt={`Image of ${activeItem.item_name}`}
-                src={activeItem.item_image}
-              />
-
-              <CardTitle tag="h5">Status</CardTitle>
-              <CardText>
-                {activeItem.claimed ? "Item Claimed" : "Item Not Claimed"}
-              </CardText>
             </CardBody>
           </Card>
         </ModalBody>

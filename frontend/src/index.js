@@ -14,7 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* <Header /> */}
-      <div className="container bg-primary bg-opacity-10">
+      <div className="container">
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />

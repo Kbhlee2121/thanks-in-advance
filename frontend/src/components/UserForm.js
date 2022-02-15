@@ -180,7 +180,9 @@ const UserForm = () => {
               </CardLink> */}
             </FormGroup>
           </Form>
-          <Button onClick={updateProfile}>Save</Button>
+          <Button color="primary" outline onClick={updateProfile}>
+            Save
+          </Button>
         </CardBody>
       </Card>
     </div>

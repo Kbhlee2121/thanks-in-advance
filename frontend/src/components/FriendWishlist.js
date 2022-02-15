@@ -40,14 +40,16 @@ const FriendWishlist = (props) => {
   return (
     //cards for friend wishlists
     <div>
-      <h3 className="text-center">My Friends' Wishlists</h3>
+      <h3 className="text-center shadow p-3 mb-5 bg-white rounded mx-2 my-2">
+        My Friends' Wishlists
+      </h3>
 
       <CardGroup>
         {friendWishlists.map((wishlist) => {
           const date = new Date(wishlist.created);
           return (
             <Card
-              className="shadow p-3 mb-5 bg-white rounded mx-2 my-2"
+              className="shadow p-3 mb-5 bg-white rounded mx-2 my-2 card-min-sizing"
               key={wishlist.id}
               onClick={() => viewWishlistHandler(wishlist)}
             >

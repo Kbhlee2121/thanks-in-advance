@@ -7,11 +7,11 @@ import { Button } from "reactstrap";
 const Main = (props) => {
   return (
     <div>
-      <h2 className="text-center">My Dashboard</h2>
-      <h4>Signed in as {props.user.username}</h4>
-      <details>
+      <h2 className="text-center text-decoration-underline">My Dashboard</h2>
+      <h5 className="text-center">Signed in as {props.user.username}</h5>
+      <details className="shadow p-2 mb-3 bg-white rounded">
         <summary>
-          <span className="h3">See User Profile</span>
+          <h3 className="d-inline-block">See User Profile</h3>
         </summary>
         <User user={props.user} />
       </details>

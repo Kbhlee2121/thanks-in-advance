@@ -21,14 +21,14 @@ const Item = (props) => {
       )}
       <span>
         <button
-          className="btn btn-info mr-2 btn-sm my-1 mx-2"
+          className="btn btn-outline-primary mr-2 btn-sm my-1 mx-2"
           onClick={(e) => setEditItemState(item)}
           disabled={isFriendViewing}
         >
           Edit
         </button>
         <button
-          className="btn btn-danger mr-2 btn-sm my-1 mx-2"
+          className="btn btn-outline-danger mr-2 btn-sm my-1 mx-2"
           onClick={(e) => deleteItem(item)}
           disabled={isFriendViewing}
         >

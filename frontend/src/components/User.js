@@ -23,9 +23,13 @@ const User = ({ user }) => {
     <div>
       <Card className="shadow p-3 mb-5 bg-white rounded">
         <CardBody>
-          <CardTitle tag="h5">User Profile</CardTitle>
-          <Button onClick={editProfile}>Edit Profile</Button>
-          <Form>
+          <CardTitle tag="h5" className="text-center">
+            User Profile
+          </CardTitle>
+          <Button color="primary" outline onClick={editProfile}>
+            Edit Profile
+          </Button>
+          <Form className="mt-2">
             <FormGroup>
               <Label for="full_name">Full Name</Label>
               <Input
