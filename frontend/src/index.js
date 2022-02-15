@@ -8,16 +8,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserForm from "./components/UserForm";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/wishlist" element={<WishlistViewer />} />
-        <Route path="/userform" element={<UserForm />} />
-      </Routes>
+      {/* <Header /> */}
+      <div className="container bg-primary bg-opacity-10">
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/wishlist" element={<WishlistViewer />} />
+          <Route path="/userform" element={<UserForm />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

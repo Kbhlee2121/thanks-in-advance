@@ -51,7 +51,7 @@ const UserForm = () => {
 
   return (
     <div>
-      <Card>
+      <Card className="shadow p-3 mb-5 bg-white rounded">
         <CardBody>
           <CardTitle tag="h5">Edit Profile</CardTitle>
           <Form>

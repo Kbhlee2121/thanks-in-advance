@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./App.css";
 import Login from "./components/Login";
 import Main from "./components/Main";
+import Header from "./components/Header";
 
 function App() {
   const navigate = useNavigate();
@@ -38,14 +39,17 @@ function App() {
   //   : setUser(null);
   return (
     <div>
-      {user != null ? (
-        <Main user={user} logout={logout} />
-      ) : (
-        <Login setUser={setUser} />
-      )}
-      <footer className="my-5 mb-2 text-center">
-        Copyright {date.getFullYear()} &copy; All Rights Reserved{" "}
-      </footer>
+      <Header logout={logout} />
+      <div className="container">
+        {user != null ? (
+          <Main user={user} logout={logout} />
+        ) : (
+          <Login setUser={setUser} />
+        )}
+        <footer className="my-5 mb-2 text-center">
+          Copyright {date.getFullYear()} &copy; All Rights Reserved{" "}
+        </footer>
+      </div>
     </div>
   );
 }

@@ -44,15 +44,19 @@ const FriendWishlist = (props) => {
 
       <CardGroup>
         {friendWishlists.map((wishlist) => {
+          const date = new Date(wishlist.created);
           return (
             <Card
+              className="shadow p-3 mb-5 bg-white rounded mx-2 my-2"
               key={wishlist.id}
               onClick={() => viewWishlistHandler(wishlist)}
             >
               <CardBody>
                 <CardTitle tag="h5">{wishlist.title}</CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
-                  Created: {wishlist.created}
+                  {`Created: ${
+                    date.getMonth() + 1
+                  }/${date.getDate()}/${date.getFullYear()}`}
                 </CardSubtitle>
                 <CardText>{wishlist.description}</CardText>
               </CardBody>

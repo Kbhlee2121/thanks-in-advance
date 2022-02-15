@@ -21,7 +21,7 @@ const User = ({ user }) => {
   };
   return (
     <div>
-      <Card>
+      <Card className="shadow p-3 mb-5 bg-white rounded">
         <CardBody>
           <CardTitle tag="h5">User Profile</CardTitle>
           <Button onClick={editProfile}>Edit Profile</Button>

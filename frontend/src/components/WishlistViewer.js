@@ -273,10 +273,10 @@ function WishlistViewer() {
           {activeWishlist.title}
         </h2>
       </header>
-      <div className="item-container">
+      <div className="item-container shadow p-3 mb-5 bg-white rounded">
         <form id="form">
           <input
-            className="form-control"
+            className="form-control mt-1"
             id="search-item"
             type="text"
             name="search"
@@ -284,11 +284,10 @@ function WishlistViewer() {
             onChange={searchWishList}
           />
         </form>
-        <button className="btn btn-warning" onClick={setAddItemState}>
+        <button className="btn btn-warning my-3" onClick={setAddItemState}>
           Add Item
         </button>
-      </div>
-      <div id="list-wrapper">
+
         <ul className="list-group list-group-flush">
           <ItemsList
             itemsList={itemsList}

@@ -55,12 +55,12 @@ const Login = (props) => {
     <Container className="d-flex vh-100">
       <Row className="m-auto align-self-center">
         <Col>
-          <Card>
-            <header>
-              <h1>Thanks in Advance</h1>
+          <Card className="shadow p-5 mb-5 bg-white rounded">
+            <header className="my-3 mx-1 text-center">
+              <h1>Login</h1>
             </header>
             <Form inline>
-              <FormGroup className="mb-2 me-sm-2 mb-sm-0">
+              <FormGroup className="mb-2 me-sm-2 mb-sm-0 my-2">
                 <Label className="me-sm-2" for="username">
                   Username
                 </Label>
@@ -72,7 +72,7 @@ const Login = (props) => {
                   onChange={inputHandler}
                 />
               </FormGroup>
-              <FormGroup className="mb-2 me-sm-2 mb-sm-0">
+              <FormGroup className="mb-2 me-sm-2 mb-sm-0 my-2">
                 <Label className="me-sm-2" for="password">
                   Password
                 </Label>
@@ -88,6 +88,7 @@ const Login = (props) => {
                 color="primary"
                 outline={true}
                 onClick={loginButtonHandler}
+                className="my-2"
               >
                 Login
               </Button>

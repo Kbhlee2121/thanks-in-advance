@@ -7,19 +7,8 @@ import { Button } from "reactstrap";
 const Main = (props) => {
   return (
     <div>
-      <header>
-        {/* reactstrap breadcrumb? */}
-        {/* Logout instead of home? */}
-        <Link to="/">Home</Link>
-        <Button color="danger" onClick={props.logout}>
-          Logout
-        </Button>
-        <h1>Thanks in Advance</h1>
-        <h2 className="text-center">My Dashboard</h2>
-        <h3>
-          Signed in as <b>{props.user.username}</b>
-        </h3>
-      </header>
+      <h2 className="text-center">My Dashboard</h2>
+      <h4>Signed in as {props.user.username}</h4>
       <details>
         <summary>
           <span className="h3">See User Profile</span>
